@@ -1,0 +1,26 @@
+@font-face {
+  font-family: 'Angst';
+  src: url('../fonts/AngstVF.woff') format('woff');
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'ZT Nueu Ralewe';
+  src: url('../fonts/ZTNeueRalewe-Medium.otf') format('opentype');
+  font-style: normal;
+  font-weight: 500;
+}
+
+@font-face {
+  font-family: 'ZT Nueu Ralewe';
+  src: url('../fonts/ZTNeueRalewe-SemiBold.otf') format('opentype');
+  font-style: normal;
+  font-weight: 700;
+}
+
+@font-face {
+  font-family: 'ZT Neue Ralewe';
+  src: url('../fonts/ZTNeueRalewe-Bold.otf') format('opentype');
+  font-style: normal;
+  font-weight: 800;
+}
