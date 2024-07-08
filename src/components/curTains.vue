@@ -54,6 +54,11 @@ export default {
     font-size: 96px;
     color: $white;
     user-select: none;
+    @media screen {
+      @media (max-width: 960px) {
+        font-size: 36px;
+      }
+    }
   }
 }
 .appearance-leave-active {

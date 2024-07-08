@@ -13,6 +13,12 @@
           <div class="icon vk-icon"></div>
         </a>
       </div>
+      <div class="address">
+        <a href="https://yandex.ru/maps/-/CDGVI2Ym" class="base_link straight_link">
+          <div class="icon place-icon"></div>
+          Дивенская, 5
+        </a>
+      </div>
     </div>
     <div class="some_info">
       <p class="balamutki">
@@ -42,17 +48,30 @@ export default {
   max-width: 1024px;
   color: $white;
   padding: 60px 0;
+  @media screen {
+    @media (max-width: 500px) {
+      max-width: 95%;
+    }
+  }
 }
 .socials{
   font-family: $text-font;
   font-weight: 800;
   text-align: center;
   font-size: 24px;
+  margin-bottom: 40px;
   .social_links{
     display: flex;
     align-items: center;
     justify-content: center;
-    margin: 40px 0;
+    margin: 40px 0 20px 0;
+  }
+  .address{
+    display: flex;
+    justify-content: center;
+    .icon{
+      max-width: 50px;
+    }
   }
 }
 .some_info{

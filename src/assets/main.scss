@@ -17,15 +17,31 @@ body{
 
 .icon{
   width: 100px;
-  height: 100px;
+  aspect-ratio: 1 / 1;
+  background-position: center;
+  background-size: contain;
+  @media screen {
+    @media (max-width: 500px) {
+      width: 50px;
+    }
+  }
 }
 .ig-icon{
-  background: url('@/assets/imgs/icons/instagram.svg');
+  background: url('@/assets/imgs/icons/instagram.svg') 50% 50% / cover;
   margin: 0 60px;
 }
 .tg-icon{
-  background: url('@/assets/imgs/icons/telegram.svg');
+  background: url('@/assets/imgs/icons/telegram.svg') 50% 50% / cover;
 }
 .vk-icon{
-  background: url('@/assets/imgs/icons/vk.svg');
+  background: url('@/assets/imgs/icons/vk.svg') 50% 50% / cover;
+}
+.place-icon{
+  background: url('@/assets/imgs/icons/location.svg') 50% 50% / cover;
+}
+
+.straight_link{
+  display: flex;
+  align-items: center;
+  text-decoration: underline;
 }
