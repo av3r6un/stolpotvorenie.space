@@ -8,6 +8,10 @@ body{
   background: url('@/assets/imgs/noise.png'),
               linear-gradient(90deg, #5b6b5f 0%, #3c4b3e 25%, #2b3b2f 51.88%, #4c5c4f 82.97%, #6a7a6f 100%);
   background-blend-mode: overlay;
+  &::-webkit-scrollbar{
+    -webkit-appearance: none;
+    display: none;
+  }
 }
 
 .base_link{
@@ -44,4 +48,63 @@ body{
   display: flex;
   align-items: center;
   text-decoration: underline;
+}
+
+.input_wide{
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid $white;
+  border-radius: none;
+  font-family: $text-font;
+  color: $yellow;
+  height: 30px;
+  outline:none;
+  font-size: 19px;
+  padding-left: 10px;
+  width: 100%;
+  &:not(:placeholder-shown) {
+    border-bottom-color: $yellow;
+    border-radius: 5px;
+  }
+  &:not(:last-of-type) {
+    margin-bottom: 10px;
+  }
+  &.not-valid{
+    border-bottom-color: $red;
+    color: $red;
+    &:placeholder-shown{
+      border-bottom-color: $white;
+      color: $white;
+    }
+  }
+}
+
+.form_label{
+  font-family: $text-font;
+  color: $white;
+  font-size: 24px;
+}
+.base_title{
+  font-family: $title-font;
+  font-size: 24px;
+  color: $white;
+  text-align: center;
+}
+
+.btn_submit{
+  background: $white;
+  color: $black;
+  border: none;
+  border-radius: 8px;
+  width: 100%;
+  height: 40px;
+  font-family: $text-font;
+  font-size: 20px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.inv_input{
+  opacity: 0;
+  position: absolute;
 }

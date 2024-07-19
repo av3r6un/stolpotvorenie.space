@@ -24,3 +24,10 @@
   font-style: normal;
   font-weight: 800;
 }
+
+@font-face {
+	font-family: 'FontAwesome';
+	src: url('../fonts/FontAwesome.ttf') format('truetype');
+	font-weight: 500;
+	font-style: normal;
+}

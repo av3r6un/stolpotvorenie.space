@@ -33,15 +33,16 @@ export default {
   align-items: center;
   justify-content: center;
   pointer-events: none;
+  z-index: 3;
   .curtain{
-    height: calc(100% + 10px);
+    height: calc(100% + 100px);
     width: 960px;
   }
   &_left{
-    background: url('@/assets/imgs/left_curtain.png') no-repeat 50% 100% / cover;
+    background: url('@/assets/imgs/left_curtain.png') no-repeat 50% 0% / cover;
   }
   &_right{
-    background: url('@/assets/imgs/right_curtain.png') no-repeat 50% 100% / cover;
+    background: url('@/assets/imgs/right_curtain.png') no-repeat 50% 0% / cover;
   }
   &_middle{
     display: none;
@@ -66,7 +67,7 @@ export default {
 }
 @keyframes appear {
   100% {
-    transform: translateY(-100vh);
+    transform: translateY(calc(-100vh - 100px));
   }
 }
 </style>

@@ -19,5 +19,11 @@ module.exports = {
     'import/no-dynamic-require': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
     'import/no-extraneous-dependencies': 'off',
     'vuejs-accessibility/anchor-has-content': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
+    'vuejs-accessibility/label-has-for': ["error", {
+      "required": {
+        "some": ["nesting", "id"]
+      },
+    }],
+    'no-restricted-globals': 'off',
   },
 };
