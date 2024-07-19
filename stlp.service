@@ -1,0 +1,13 @@
+[Unit]
+Description=STLP Daemon Wrapper
+After=network.target
+
+[Service]
+User=voidspace
+Group=www-data
+WorkingDirectory=/web/stolpotvorenie.space/www
+Environment="PATH=/web/stolpotvorenie.space/.venv/bin"
+ExecStart=/web/stolpotvorenie.space/.venv/bin/uwsgi --ini uwsgi.ini
+
+[Install]
+WantedBy=multi-user.target

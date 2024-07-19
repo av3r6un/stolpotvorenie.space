@@ -27,3 +27,7 @@ __pycache__
 
 .env
 *.db
+
+
+# deploy ignore
+/dist
