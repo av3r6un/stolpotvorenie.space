@@ -22,8 +22,9 @@ def create_app():
   
   db.init_app(app)
 
-  from .views import api
-  app.register_blueprint(api, url_prefix='/api')
+  from .views import api, auth
+  app.register_blueprint(api, url_prefix='/')
+  app.register_blueprint(auth, url_prefix='/auth')
 
   jwt.init_app(app)
 
