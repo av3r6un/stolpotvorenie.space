@@ -1,6 +1,5 @@
 <template>
   <div id="app">
-    <curTains />
     <router-view/>
     <div class="footer">
       Информация на сайте не является публичной офертой.
@@ -8,11 +7,9 @@
   </div>
 </template>
 <script>
-import curTains from './components/curTains.vue';
 
 export default {
   name: 'App',
-  components: { curTains },
   data() {
     return {};
   },

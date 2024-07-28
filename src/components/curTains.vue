@@ -27,6 +27,8 @@ export default {
 @import "@/assets/variables.scss";
 .curtains{
   position: fixed;
+  left: 0;
+  top: 0;
   height: 100vh;
   width: 100%;
   display: flex;
@@ -39,10 +41,10 @@ export default {
     width: 960px;
   }
   &_left{
-    background: url('@/assets/imgs/left_curtain.png') no-repeat 50% 0% / cover;
+    background: url('@/assets/imgs/left_curtain-comp.png') no-repeat 50% 0% / cover;
   }
   &_right{
-    background: url('@/assets/imgs/right_curtain.png') no-repeat 50% 0% / cover;
+    background: url('@/assets/imgs/right_curtain-comp.png') no-repeat 50% 0% / cover;
   }
   &_middle{
     display: none;

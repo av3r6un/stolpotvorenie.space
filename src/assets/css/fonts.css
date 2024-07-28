@@ -5,14 +5,14 @@
 }
 
 @font-face {
-  font-family: 'ZT Nueu Ralewe';
+  font-family: 'ZT Neue Ralewe';
   src: url('../fonts/ZTNeueRalewe-Medium.otf') format('opentype');
   font-style: normal;
   font-weight: 500;
 }
 
 @font-face {
-  font-family: 'ZT Nueu Ralewe';
+  font-family: 'ZT Neue Ralewe';
   src: url('../fonts/ZTNeueRalewe-SemiBold.otf') format('opentype');
   font-style: normal;
   font-weight: 700;
@@ -22,7 +22,14 @@
   font-family: 'ZT Neue Ralewe';
   src: url('../fonts/ZTNeueRalewe-Bold.otf') format('opentype');
   font-style: normal;
-  font-weight: 800;
+  font-weight: bold;
+}
+
+@font-face {
+  font-family: 'ZT Neue Ralewe';
+  src: url('../fonts/ZTNeueRalewe-ExtraBold.ttf') format('truetype');
+  font-style: normal;
+  font-weight: 900;
 }
 
 @font-face {

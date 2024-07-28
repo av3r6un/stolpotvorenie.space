@@ -108,3 +108,13 @@ body{
   opacity: 0;
   position: absolute;
 }
+
+.logo_text{
+  font-family: $title-font;
+  font-size: inherit;
+  color: $black;
+}
+
+.aspect_link{
+  pointer-events: none;
+}
