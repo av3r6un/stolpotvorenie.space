@@ -57,17 +57,18 @@ def manage_booking(uid):
 @accessible_for_bots()
 def add_clients():
   if req.method == 'POST':
-    data = json.loads(req.get_data().decode('utf-8'))
-    client = {
-      'name': data['answer']['data']['user_name']['value'],
-      'surname': data['answer']['data']['user_surname']['value'],
-      'phone': data['answer']['data']['user_phone']['value'],
-      'email': data['answer']['data']['user_email']['value'],
-      'patronymic': data['answer']['data']['user_patronymic']['value'] if data['answer']['data'].get('user_patronymic') else None,
-      'registered': data['created']
-    }
-    try:
-      client = Clients(**client)
-      return jsonify(status='success')
-    except ValidationError as valid:
-      return jsonify(valid.json)
+    if req.args.get('form') == 'yndx':
+      data = json.loads(req.get_data().decode('utf-8'))
+      client = {
+        'name': data['answer']['data']['user_name']['value'],
+        'surname': data['answer']['data']['user_surname']['value'],
+        'phone': data['answer']['data']['user_phone']['value'],
+        'email': data['answer']['data']['user_email']['value'],
+        'patronymic': data['answer']['data']['user_patronymic']['value'] if data['answer']['data'].get('user_patronymic') else None,
+        'registered': data['created']
+      }
+      try:
+        client = Clients(**client)
+        return jsonify(status='success')
+      except ValidationError as valid:
+        return jsonify(valid.json)

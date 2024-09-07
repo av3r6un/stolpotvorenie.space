@@ -15,7 +15,7 @@ class Clients(db.Model):
   email = db.Column(db.String(100), nullable=False, unique=True)
   registered = db.Column(db.Integer, nullable=False, default=int(dt.now().timestamp()))
 
-  def __init__(self, name, surname, phone, email, patronymic=None, registered=None) -> None:
+  def __init__(self, name, surname, phone, email, patronymic=None, registered=None, **kwargs) -> None:
     self.uid = create_uid(7, [a.uid for a in self.query.all()])
     self.name = name
     self.surname = surname
@@ -23,6 +23,8 @@ class Clients(db.Model):
     self.phone = self._validate_phone(phone)
     self.email = self._validate_email(email)
     self.registered = self._validate_date(registered) if registered else int(dt.now().timestamp())
+    db.session.add(self)
+    db.session.commit()
 
   @property
   def json(self):
