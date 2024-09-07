@@ -50,3 +50,12 @@ def manage_booking(uid):
   if req.method == 'PUT':
     booking.confirm()
     return jsonify(status='success', message='Booking was confirmed.', body=booking.base_info)
+
+
+@api.route('/clients', methods=['POST'])
+@accessible_for_bots()
+def add_clients():
+  if req.method == 'POST':
+    data = req.get_data()
+    json = req.get_json()
+    print('Data:', data, 'JSON:', json)
