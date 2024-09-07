@@ -56,6 +56,11 @@ def manage_booking(uid):
 @accessible_for_bots()
 def add_clients():
   if req.method == 'POST':
-    data = req.get_data()
-    json = req.get_json()
-    print('Data:', data, 'JSON:', json)
+    data = {
+      'name': req.form.get('user_name'),
+      'surname': req.form.get('user_surname'),
+      'patronymic': req.form.get('user_patronymic'),
+      'phone': req.form.get('user_phone'),
+      'email': req.form.get('user_email')
+    }
+    print('Data:', data)
