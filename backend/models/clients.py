@@ -29,7 +29,7 @@ class Clients(db.Model):
     return dict(uid=self.uid, name=self.name, surname=self.surname, phone=self.phone, email=self.email)
   
   def _validate_phone(self, phone: str) -> int:
-    number = parse_num(number)
+    number = parse_num(phone)
     if not is_valid_number(number):
       raise ValidationError('register', 'not_valid_phone')
     if number.national_number in [a.phone for a in self.query.all()]:
