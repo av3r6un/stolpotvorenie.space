@@ -49,7 +49,7 @@ class Clients(db.Model):
   
   @staticmethod
   def _validate_date(date):
-    return dt.strptime(date, '%Y-%m-%dT%H:%M:%SZ').timestamp()
+    return int(dt.strptime(date, '%Y-%m-%dT%H:%M:%SZ').timestamp())
 
   def __repr__(self) -> str:
     return f'<Client +7{self.phone}>'
