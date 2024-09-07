@@ -10,7 +10,8 @@
       </div>
       <div class="content_about-aspects">
         <div class="aspect arts">
-          <router-link to="/aspect/arts" class="base_link aspect_link">
+          <router-link to="/aspect/arts" class="base_link aspect_link"
+            :disabled="true" @click.prevent="toggleAspect('art')">
             <div class="aspect_title">Живопись</div>
             <div class="aspect_image">
               <img src="../assets/imgs/art_image.jpg" alt="arts" class="base_image">
@@ -18,7 +19,8 @@
           </router-link>
         </div>
         <div class="aspect ceramics">
-          <router-link to="/aspect/ceramics" class="base_link aspect_link">
+          <router-link to="/aspect/ceramics" class="base_link aspect_link"
+            @click.prevent="toggleAspect('ceramics')">
             <div class="aspect_title">Керамика</div>
             <div class="aspect_image">
               <img src="../assets/imgs/ceramics_image.jpg" alt="arts" class="base_image">
@@ -26,7 +28,8 @@
           </router-link>
         </div>
         <div class="aspect coworking">
-          <router-link to="/aspect/coworking" class="base_link aspect_link">
+          <router-link to="/aspect/coworking" class="base_link aspect_link"
+            @click.prevent="toggleAspect('coworking')">
             <div class="aspect_title">Коворкинг</div>
             <div class="aspect_image">
               <img src="../assets/imgs/coworking_image.jpg" alt="arts" class="base_image">
@@ -34,7 +37,8 @@
           </router-link>
         </div>
         <div class="aspect lecture">
-          <router-link to="/aspect/lecture" class="base_link aspect_link">
+          <router-link to="/aspect/lecture" class="base_link aspect_link"
+            @click.prevent="toggleAspect('lecture')">
             <div class="aspect_title">Лекторий</div>
             <div class="aspect_image">
               <img src="../assets/imgs/lecture_image.jpg" alt="arts" class="base_image">
@@ -42,7 +46,8 @@
           </router-link>
         </div>
         <div class="aspect culture">
-          <router-link to="/aspect/culture" class="base_link aspect_link">
+          <router-link to="/aspect/culture" class="base_link aspect_link"
+            @click.prevent="toggleAspect('culture')">
             <div class="aspect_title">Культурные мероприятия</div>
             <div class="aspect_image">
               <img src="../assets/imgs/culture_image.jpg" alt="arts" class="base_image">
@@ -120,13 +125,16 @@ export default {
     max-width: 860px;
     margin: 0 auto;
     text-align: center;
+    &-info{
+      margin-bottom: 20px;
+    }
     &-aspects{
       display: grid;
       grid-gap: 10px;
       grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));;
       align-items: flex-start;
       justify-items: center;
-      margin-bottom: 50px;
+      margin-bottom: 100px;
       flex-wrap: wrap;
       .aspect{
         &_title{
@@ -163,7 +171,7 @@ export default {
     align-items: center;
     justify-content: center;
     font-weight: normal;
-    margin-bottom: 50px;
+    margin-bottom: 100px;
     padding: 0 20px;
     @media screen {
       @media (max-width: 650px) {

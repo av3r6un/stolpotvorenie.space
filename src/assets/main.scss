@@ -3,7 +3,7 @@
 @import './variables.scss';
 
 body{
-  background-color: $green;
+  background: $green;
   // filter: contrast(200%) brightness(200%);
   background: url('@/assets/imgs/noise.png'),
               linear-gradient(90deg, #5b6b5f 0%, #3c4b3e 25%, #2b3b2f 51.88%, #4c5c4f 82.97%, #6a7a6f 100%);
@@ -112,9 +112,4 @@ body{
 .logo_text{
   font-family: $title-font;
   font-size: inherit;
-  color: $black;
-}
-
-.aspect_link{
-  pointer-events: none;
 }
