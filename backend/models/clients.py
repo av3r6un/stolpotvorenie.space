@@ -15,14 +15,14 @@ class Clients(db.Model):
   email = db.Column(db.String(100), nullable=False, unique=True)
   registered = db.Column(db.Integer, nullable=False, default=int(dt.now().timestamp()))
 
-  def __init__(self, name, surname, phone, email, patronymic=None) -> None:
+  def __init__(self, name, surname, phone, email, patronymic=None, registered=None) -> None:
     self.uid = create_uid(7, [a.uid for a in self.query.all()])
     self.name = name
     self.surname = surname
     self.patronymic = patronymic
     self.phone = self._validate_phone(phone)
     self.email = self._validate_email(email)
-    self.registered = int(dt.now().timestamp())
+    self.registered = self._validate_date(registered) if registered else int(dt.now().timestamp())
 
   @property
   def json(self):
@@ -44,6 +44,10 @@ class Clients(db.Model):
     if not re.match(pattern, email):
       raise ValidationError('register', 'not_valid_email')
     return email
+  
+  @staticmethod
+  def _validate_date(date):
+    return dt.fromisoformat(date).timestamp()
 
   def __repr__(self) -> str:
     return f'<Client +7{self.phone}>'
