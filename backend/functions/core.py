@@ -21,7 +21,7 @@ def superuser_access(current_user):
     return is_superuser
   return endpoint_wrapper
   
-def accessible_for_bots(current_user):
+def accessible_for_bots(current_user=None):
   def endpoint_wrapper(func):
     @wraps(func)
     def is_bot(*args, **kwargs):
