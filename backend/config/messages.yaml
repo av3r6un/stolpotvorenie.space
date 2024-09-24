@@ -1,4 +1,6 @@
 validation:
+  uid:
+    not_found: 'Указанный идентификатор не найден'
   login:
     not_found: 'Пользователь с таким логином не найден'
     passwords_mismatch: 'Пароли не совпадают'
