@@ -15,12 +15,12 @@ module.exports = defineConfig({
   devServer: {
     proxy: {
       '/api': {
-        target: 'http://192.168.0.101:48600/api',
+        target: `http://${process.env.HOST}:48600/api`,
         changeOrigin: true,
         pathRewrite: { '^/api': '' },
       },
       '/auth': {
-        target: 'http://192.168.0.101:48600/auth',
+        target: `http://${process.env.HOST}:48600/auth`,
         changeOrigin: true,
         pathRewrite: { '^/auth': '' },
       },
