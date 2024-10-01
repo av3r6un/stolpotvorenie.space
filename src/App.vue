@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <router-view/>
+    <router-view />
     <div class="footer">
       Информация на сайте не является публичной офертой.
     </div>
@@ -20,6 +20,8 @@ export default {
       { name: 'viewport', content: 'width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover' },
       { name: 'theme-color', content: '#357357', media: '(prefers-color-scheme: dark)' },
     ],
+  },
+  mounted() {
   },
 };
 </script>

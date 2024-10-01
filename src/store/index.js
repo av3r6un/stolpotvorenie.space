@@ -10,12 +10,16 @@ export default new Vuex.Store({
   state: user
     ? {
       isAuth: true,
+      accsToken: user.accs_token,
+      rfshToken: user.rfsh_token,
       uid: user.uid,
       login: user.login,
     }
     : {
       isAuth: false,
       uid: null,
+      accsToken: null,
+      rfshToken: null,
       login: null,
       admin: null,
     },
@@ -24,30 +28,39 @@ export default new Vuex.Store({
     uid: (state) => state.uid,
     login: (state) => state.login,
     admin: (state) => state.admin,
+    accsToken: (state) => state.accsToken,
+    rfshToken: (state) => state.rfshToken,
   },
   mutations: {
     login(state, userInfo) {
       state.uid = userInfo.uid;
       state.login = userInfo.login;
+      state.accsToken = userInfo.accs_token;
+      state.rfshToken = userInfo.rfsh_token;
       state.isAuth = true;
     },
     loginAdmin(state, userInfo) {
       state.uid = userInfo.uid;
       state.login = userInfo.login;
+      state.accsToken = userInfo.accs_token;
+      state.rfshToken = userInfo.rfsh_token;
       state.admin = true;
       state.isAuth = true;
     },
     logout(state) {
       state.uid = null;
       state.login = null;
+      state.rfshToken = null;
+      state.accsToken = null;
       state.isAuth = null;
     },
     register(state, userInfo) {
       state.uid = userInfo.uid;
       state.isAuth = false;
     },
-    refresh(state) {
+    refresh(state, userInfo) {
       state.isAuth = true;
+      state.accsToken = userInfo;
     },
   },
   actions: {
@@ -73,7 +86,7 @@ export default new Vuex.Store({
     },
     async refresh({ commit }, userInfo) {
       return AuthService.refresh(userInfo)
-        .then(() => commit('refresh'));
+        .then(() => commit('refresh', userInfo));
     },
     async register({ commit }, userInfo) {
       return AuthService.register(userInfo)

@@ -42,13 +42,7 @@ class AuthService {
         }
         return rfshToken;
       })
-      .catch((err) => {
-        let ret = null;
-        if (err.status === 403 && err.response.data.msg === 'THE') {
-          ret = 'perm_auth';
-        }
-        return ret;
-      });
+      .catch((err) => (err.status === 403 ? 'perm_auth' : null));
   }
 }
 

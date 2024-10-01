@@ -2,10 +2,10 @@
   <article class="auth">
     <div class="auth_wrapper">
       <div class="auth_title base_title">Авторизация</div>
-      <form class="auth_form" @submit.prevent="loginUser">
+      <form class="auth_form" @submit.prevent="login">
         <label for="login" class="form_label">Логин</label>
         <input type="text" class="input_wide" id="login" required autocompete="off"
-          v-model="uData.login" placeholder="">
+          v-model="uData.username" placeholder="">
         <label for="password" class="form_label">Пароль</label>
         <input type="password" id="password" required autocomplete="off" class="input_wide"
           v-model="uData.password" placeholder="" @input="validatePassword"
@@ -21,14 +21,16 @@
 </template>
 <script>
 import checkBox from '@/components/checkBox.vue';
+import Backend from '../services/backend.service';
 
 export default {
   name: 'AuthView',
   components: { checkBox },
   data() {
     return {
+      backend: new Backend(),
       uData: {
-        login: null,
+        username: null,
         password: null,
         rm: null,
       },
@@ -41,10 +43,15 @@ export default {
       validPassword = pattern.test(this.uData.password);
       return validPassword ? this.$refs.passwordInput.classList.remove('not-valid') : this.$refs.passwordInput.classList.add('not-valid');
     },
-    loginUser() {
-      if (this.$router.path.split('/').includes('admin')) {
-        this.$store.dispatch('/admin/login');
-      }
+    login() {
+      this.$store.dispatch('login', this.uData)
+        .then((resp) => {
+          console.log(resp);
+          setTimeout(() => {
+            this.$router.push('/');
+          }, 1500);
+        })
+        .catch((err) => console.error(err));
     },
   },
   mounted() {},
