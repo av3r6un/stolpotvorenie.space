@@ -4,7 +4,7 @@ import store from '../store';
 import UserService from '../services/user.service';
 import HomeView from '../views/HomeView.vue';
 import AuthView from '../views/AuthView.vue';
-import PanelView from '../views/PanelView.vue';
+import PanelView from '../views/cp/PanelView.vue';
 
 Vue.use(VueRouter);
 
@@ -13,18 +13,26 @@ const routes = [
     path: '/',
     name: 'Главная',
     component: HomeView,
+    meta: {
+      navigation: 'nav',
+    },
   },
   {
     path: '/login',
     name: 'Авторизация',
     component: AuthView,
+    meta: {
+      navigation: null,
+    },
   },
   {
     path: '/cp',
     name: 'Панель управления',
     component: PanelView,
     meta: {
+      control: true,
       adminAccess: true,
+      navigation: 'side',
     },
   },
 ];

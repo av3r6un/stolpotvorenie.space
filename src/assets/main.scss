@@ -20,8 +20,6 @@ body{
 }
 
 .icon{
-  width: 100px;
-  aspect-ratio: 1 / 1;
   background-position: center;
   background-size: contain;
   @media screen {
@@ -50,34 +48,34 @@ body{
   text-decoration: underline;
 }
 
-.input_wide{
-  background: transparent;
-  border: none;
-  border-bottom: 1px solid $white;
-  border-radius: none;
-  font-family: $text-font;
-  color: $yellow;
-  height: 30px;
-  outline:none;
-  font-size: 19px;
-  padding-left: 10px;
-  width: 100%;
-  &:not(:placeholder-shown) {
-    border-bottom-color: $yellow;
-    border-radius: 5px;
-  }
-  &:not(:last-of-type) {
-    margin-bottom: 10px;
-  }
-  &.not-valid{
-    border-bottom-color: $red;
-    color: $red;
-    &:placeholder-shown{
-      border-bottom-color: $white;
-      color: $white;
-    }
-  }
-}
+// .input_wide{
+//   background: transparent;
+//   border: none;
+//   border-bottom: 1px solid $white;
+//   border-radius: none;
+//   font-family: $text-font;
+//   color: $yellow;
+//   height: 30px;
+//   outline:none;
+//   font-size: 19px;
+//   padding-left: 10px;
+//   width: 100%;
+//   &:not(:placeholder-shown) {
+//     border-bottom-color: $yellow;
+//     border-radius: 5px;
+//   }
+//   &:not(:last-of-type) {
+//     margin-bottom: 10px;
+//   }
+//   &.not-valid{
+//     border-bottom-color: $red;
+//     color: $red;
+//     &:placeholder-shown{
+//       border-bottom-color: $white;
+//       color: $white;
+//     }
+//   }
+// }
 
 .form_label{
   font-family: $text-font;
@@ -112,4 +110,8 @@ body{
 .logo_text{
   font-family: $title-font;
   font-size: inherit;
+}
+
+.serif{
+  font-family: $serif-font;
 }

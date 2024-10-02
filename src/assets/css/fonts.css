@@ -1,7 +1,14 @@
 @font-face {
   font-family: 'Angst';
-  src: url('../fonts/AngstVF.woff') format('woff');
+  src: url('../fonts/AngstVF.ttf') format('truetype');
   font-style: normal;
+}
+
+@font-face {
+  font-family: 'AngstS';
+  src: url('../fonts/AngstVF.ttf') format('truetype');
+  font-style: 'Normal Serif';
+  font-weight: bold;
 }
 
 @font-face {
