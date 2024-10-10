@@ -1,0 +1,54 @@
+@font-face {
+  font-family: 'Angst';
+  src: url('../fonts/AngstVF.ttf') format('truetype');
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'AngstS';
+  src: url('../fonts/AngstVF.ttf') format('truetype');
+  font-style: 'Normal Serif';
+  font-weight: bold;
+}
+
+@font-face {
+  font-family: 'ZT Neue Ralewe';
+  src: url('../fonts/ZTNeueRalewe-Medium.otf') format('opentype');
+  font-style: normal;
+  font-weight: 500;
+}
+
+@font-face {
+  font-family: 'ZT Neue Ralewe';
+  src: url('../fonts/ZTNeueRalewe-SemiBold.otf') format('opentype');
+  font-style: normal;
+  font-weight: 700;
+}
+
+@font-face {
+  font-family: 'ZT Neue Ralewe';
+  src: url('../fonts/ZTNeueRalewe-Bold.otf') format('opentype');
+  font-style: normal;
+  font-weight: bold;
+}
+
+@font-face {
+  font-family: 'ZT Neue Ralewe';
+  src: url('../fonts/ZTNeueRalewe-ExtraBold.ttf') format('truetype');
+  font-style: normal;
+  font-weight: 900;
+}
+
+@font-face {
+	font-family: 'FontAwesome';
+	src: url('../fonts/FontAwesome.ttf') format('truetype');
+	font-weight: 500;
+	font-style: normal;
+}
+
+@font-face{
+  font-family: 'Kreadon';
+  src: url('../fonts/KreadonVF.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}

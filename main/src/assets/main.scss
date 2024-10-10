@@ -1,0 +1,126 @@
+@import './css/fonts.css';
+@import './css/reset.css';
+@import './variables.scss';
+
+body{
+  background: white;
+  // filter: contrast(200%) brightness(200%);
+  // background: url('@/assets/imgs/noise.png'),
+  //             linear-gradient(90deg, #5b6b5f 0%, #3c4b3e 25%, #2b3b2f 51.88%, #4c5c4f 82.97%, #6a7a6f 100%);
+  // background-blend-mode: overlay;
+  &::-webkit-scrollbar{
+    -webkit-appearance: none;
+    display: none;
+  }
+}
+
+.base_link{
+  text-decoration: none;
+  color: inherit;
+}
+
+.icon{
+  background-position: center;
+  background-size: contain;
+  @media screen {
+    @media (max-width: 500px) {
+      width: 50px;
+    }
+  }
+}
+.ig-icon{
+  background: url('@/assets/imgs/icons/instagram.svg') 50% 50% / cover;
+  margin: 0 60px;
+}
+.tg-icon{
+  background: url('@/assets/imgs/icons/telegram.svg') 50% 50% / cover;
+}
+.vk-icon{
+  background: url('@/assets/imgs/icons/vk.svg') 50% 50% / cover;
+}
+.place-icon{
+  background: url('@/assets/imgs/icons/location.svg') 50% 50% / cover;
+}
+
+.straight_link{
+  display: flex;
+  align-items: center;
+  text-decoration: underline;
+}
+
+.input_wide{
+  background: $semi-white;
+  color: $semi-black;
+  border-radius: 7px;
+  border: none;
+  font-family: $text-font;
+  height: 35px;
+  font-size: 18px;
+  padding-left: 20px;
+  outline:none;
+  width: 100%;
+  box-sizing: border-box;
+  &:not(:placeholder-shown) {
+    border-bottom-color: $semi-black;
+    border-radius: 5px;
+  }
+  &.not-valid{
+    border-bottom-color: $red;
+    color: $red;
+    &:placeholder-shown{
+      border-bottom-color: $white;
+      color: $semi-black;
+    }
+  }
+  &:not(:last-of-type) {
+    margin-bottom: 10px;
+  }
+  //   background: transparent;
+//   border: none;
+//   border-bottom: 1px solid $white;
+//   border-radius: none;
+//   font-family: $text-font;
+//   color: $yellow;
+//   height: 30px;
+//   font-size: 19px;
+//   padding-left: 10px;
+}
+
+.form_label{
+  font-family: $text-font;
+  color: $white;
+  font-size: 24px;
+}
+.base_title{
+  font-family: $title-font;
+  font-size: 24px;
+  color: $black;
+  text-align: center;
+}
+
+.btn_submit{
+  background: $green;
+  color: $white;
+  border: none;
+  border-radius: 8px;
+  width: 100%;
+  height: 40px;
+  font-family: $text-font;
+  font-size: 18px;
+  font-weight: 400;
+  cursor: pointer;
+}
+
+.inv_input{
+  opacity: 0;
+  position: absolute;
+}
+
+.logo_text{
+  font-family: $title-font;
+  font-size: inherit;
+}
+
+.serif{
+  font-family: $serif-font;
+}
