@@ -13,11 +13,19 @@ def superuser_access(current_user):
   def endpoint_wrapper(func):
     @wraps(func)
     def is_superuser(*args, **kwargs):
-      from backend.models import Admins
+      from backend import app
       from flask import request as req, jsonify
-      if not current_user.superuser:
+      token = req.headers.get('X-API-TOKEN')
+
+      if not token and not current_user:
         return jsonify(dict(status='error', message='Not Allowed')), 401
-      return func(*args, **kwargs)
+      
+      else:
+        if token in app.config['BOT_TOKENS']:
+          return func(*args, **kwargs)
+        
+        if not current_user.superuser:
+          return jsonify(dict(status='error', message='Not Allowed')), 401
     return is_superuser
   return endpoint_wrapper
   

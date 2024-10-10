@@ -1,0 +1,12 @@
+*{
+  margin: 0;
+  padding: 0;
+}
+html, div, p, body, article, input, button, textarea, select{
+	box-sizing: border-box;
+}
+.btn{
+	outline: none;
+	border: none;
+	background: none;
+}

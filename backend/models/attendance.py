@@ -11,7 +11,7 @@ class Attendance(db.Model):
   schedule_uid = db.Column(db.String(11), db.ForeignKey('schedule.uid'), nullable=False)
   attended = db.Column(db.Boolean, nullable=False, default=True)
 
-  def __init__(self, client_uid, schedule_uid, date=None, attended=None) -> None:
+  def __init__(self, client_uid, schedule_uid, date=None, attended=None, **kwargs) -> None:
     self.uid = create_uid(12, [a.uid for a in self.query.all()])
     self.client_uid, self.is_mature = self._validate_client_uid(client_uid)
     self.schedule_uid = schedule_uid

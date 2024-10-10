@@ -38,9 +38,10 @@ def refresh():
 @superuser_access(current_user)
 def new_admin():
   user_data = req.get_json()
+  print(user_data)
   try:
     Admins(**user_data)
-    return jsonify(dict(status='success'), message='Администратор успешно создан!')
+    return jsonify(dict(status='success', message='Администратор успешно создан!'))
   except ValidationError as valid:
     return jsonify(valid.json), 400
   
@@ -61,3 +62,13 @@ def refresh_admins():
   iden = get_jwt_identity()
   token = Admins.refresh(iden)
   return jsonify(dict(status='success', token=token))
+
+
+@auth.route('/admins/restore', methods=['POST'])
+@jwt_required(optional=True)
+@superuser_access(current_user)
+def restore_admins():
+  if req.method == 'POST':
+    user_data = req.get_json()
+    Admins.restore(**user_data)
+    return jsonify(dict(status="success", message="Пароль успешно сброшен"))

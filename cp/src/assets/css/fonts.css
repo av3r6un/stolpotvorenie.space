@@ -1,0 +1,19 @@
+@font-face {
+  font-family: 'Angst';
+  src: url('../fonts/AngstVF.woff') format('woff');
+  font-style: normal;
+}
+
+@font-face {
+	font-family: 'FontAwesome';
+	src: url('../fonts/FontAwesome.ttf') format('truetype');
+	font-weight: 500;
+	font-style: normal;
+}
+
+@font-face{
+  font-family: 'Kreadon';
+  src: url('../fonts/KreadonVF.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}

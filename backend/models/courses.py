@@ -7,25 +7,34 @@ class Courses(db.Model):
   name = db.Column(db.String(50), nullable=False)
   description = db.Column(db.Text, nullable=True)
   info = db.Column(db.Text, nullable=True)
-  groups = db.Column(db.Text, nullable=True)
+  teacher_uid = db.Column(db.String(8), db.ForeignKey('teachers.uid'), nullable=True)
 
-  def __init__(self, name, description=None, info=None) -> None:
+  def __init__(self, name, teacherUid, description=None, info=None, **kwargs) -> None:
     self.uid = create_uid(10, [a.uid for a in self.query.all()])
     self.name = name
     self.description = description
     self.info = info
+    self.teacher_uid = teacherUid
     db.session.add(self)
     db.session.commit()
 
   @property
-  def _groups(self) -> list:
-    return self.groups.split(',')
+  def json(self) -> dict:
+    return dict(uid=self.uid, name=self.name, description=self.description, info=self.info,
+                teacher_uid=self.teacher_uid, type=self.type)
   
-  @_groups.setter
-  def groups(self, group_uid):
-    self._groups.append(group_uid)
-    self.groups = ','.join(self._groups)
-    db.session.commit()
+  @property
+  def type(self) -> str:
+    if self.name == 'Живопись':
+      return 'artwork'
+    elif self.name == 'Керамика':
+      return 'ceramic'
+    else:
+      return 'lecture'
   
+  @classmethod
+  def all(cls):
+    return [a.json for a in cls.query.all()]
+
   def __repr__(self):
     return f'<Course ${self.uid} with {len(self._groups)} groups>'

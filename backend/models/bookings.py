@@ -14,7 +14,7 @@ class CalendarConstants(db.Model):
   time_end = db.Column(db.Integer, nullable=False)
   active = db.Column(db.Boolean, nullable=False, default=True)
 
-  def __init__(self, name, linked_person, day, time_start, time_end) -> None:
+  def __init__(self, name, linked_person, day, time_start, time_end, **kwargs) -> None:
     self.uid = create_uid(3, [a.uid for a in self.query.all()])
     self.name = name
     self.linked_person = linked_person
