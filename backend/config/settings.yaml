@@ -2,3 +2,6 @@ STRONG_PASSWORD_PATTERN: '^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_])[A-Za-z\d\W_
 EMAIL_PATTERN: '^\S+@\S+\.\S+$'
 WORKING_DAYS: [Пн, Вт, Ср, Чт, Пт, Сб, Вс]
 WORKING_HOURS: ['11:00', '22:00']
+COURSES_TYPES:
+  ceramic: 'Керамика'
+  artwork: 'Живопись'

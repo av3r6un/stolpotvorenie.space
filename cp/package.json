@@ -11,6 +11,7 @@
     "@kyvg/vue3-notification": "^3.3.0",
     "axios": "^1.7.7",
     "core-js": "^3.8.3",
+    "moment": "^2.30.1",
     "register-service-worker": "^1.7.2",
     "vue": "^3.2.13",
     "vue-router": "^4.0.3",
@@ -57,7 +58,9 @@
       "import/no-dynamic-require": "off",
       "eslint-plugin-import/no-extraneous-dependencies": "off",
       "no-restricted-globals": "off",
-      "vuejs-accessibility/no-autofocus": "off"
+      "vuejs-accessibility/no-autofocus": "off",
+      "no-plusplus": "off",
+      "vue/multi-word-component-names": "off"
     }
   },
   "browserslist": [

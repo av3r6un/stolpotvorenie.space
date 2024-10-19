@@ -6,6 +6,7 @@
 </template>
 <script>
 import sideBar from '@/components/sideBar.vue';
+import Storage from './services/storage.service';
 
 export default {
   name: 'App',
@@ -14,6 +15,7 @@ export default {
   },
   data() {
     return {
+      localStorage: new Storage(),
       short: true,
       dark: false,
     };

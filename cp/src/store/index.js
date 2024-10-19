@@ -26,6 +26,7 @@ export default createStore({
     isAuth: (state) => state.isAuth,
     uid: (state) => state.uid,
     login: (state) => state.login,
+    name: (state) => state.name,
     accsToken: (state) => state.accsToken,
     rfshToken: (state) => state.rfshToken,
   },
@@ -35,6 +36,7 @@ export default createStore({
       state.login = userInfo.login;
       state.accsToken = userInfo.accs_token;
       state.rfshToken = userInfo.rfsh_token;
+      state.name = userInfo.name;
       state.isAuth = true;
     },
     logout(state) {

@@ -1,12 +1,12 @@
 import { createRouter, createWebHashHistory } from 'vue-router';
-// import store from '@/store';
+import store from '@/store';
 // import UserService from '@/services/user.service';
 import HomeView from '../views/HomeView.vue';
 import ClientsView from '../views/ClientsView.vue';
 import GroupsView from '../views/GroupsView.vue';
 import ScheduleView from '../views/ScheduleView.vue';
 import AttendenceView from '../views/AttendenceView.vue';
-import TeachersView from '../views/TeachersView.vue';
+import ProfileView from '../views/ProfileView.vue';
 import LoginView from '../views/LoginView.vue';
 
 const routes = [
@@ -36,9 +36,9 @@ const routes = [
     component: AttendenceView,
   },
   {
-    path: '/teachers',
+    path: '/profile',
     name: 'Преподаватели',
-    component: TeachersView,
+    component: ProfileView,
   },
   {
     path: '/login',
@@ -54,6 +54,18 @@ const router = createRouter({
   linkActiveClass: '',
 });
 
+router.beforeEach((to, from, next) => {
+  if (!store.getters.isAuth && to.path !== '/login') {
+    next({
+      path: '/login',
+      query: { redirect: to.fullPath },
+    });
+  } else if (store.getters.isAuth && to.path === '/login') {
+    next('/');
+  } else {
+    next();
+  }
+});
 // const us = new UserService();
 // router.beforeEach((to, from, next) => {
 //   // const userAuthenticated = store.getters.isAuth;
@@ -73,5 +85,4 @@ const router = createRouter({
 //     next();
 //   }
 // });
-
 export default router;

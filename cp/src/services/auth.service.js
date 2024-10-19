@@ -11,9 +11,11 @@ class AuthService {
     this.msg = null;
     return axios
       .post('/auth/admins', user, { headers: gatherToken() })
-      .then((resp) => {
+      .then(async (resp) => {
         if (resp.data.status === 'success') {
           localStorage.setItem('_auth', JSON.stringify(resp.data.body));
+          const param = await this.getQueryParam('redirect');
+          location.href = `/#${param}` || '/';
         }
         return resp.data;
       })
@@ -25,6 +27,16 @@ class AuthService {
     localStorage.removeItem('_auth');
     location.href = '/';
     return true;
+  }
+
+  async getQueryParam(name, url = window.location.href) {
+    this.msg = null;
+    const searchName = name.replace(/[[\]]/g, '\\$&');
+    const regex = new RegExp(`[?&]${searchName}(=([^&#]*)|&|#|$)`);
+    const results = regex.exec(url);
+    if (!results) return null;
+    if (!results[2]) return '';
+    return decodeURIComponent(results[2].replace(/\+/g, ' '));
   }
 
   async refresh(token) {

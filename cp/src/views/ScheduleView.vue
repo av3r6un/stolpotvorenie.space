@@ -1,23 +1,7 @@
 <template>
   <article class="schedule">
     <div class="base_title changable">Расписание</div>
-    <div class="schedule_grid changable">
-      <div class="time_slot changable" v-for="time, idx in times" :key="idx">{{ time }}</div>
-      <div class="day_header changable" v-for="day, idx in formattedDays" :key="idx">
-        <div class="day_header-actions changable" v-if="idx == 0">
-          <div class="left_arrow"></div>
-          Сегодня
-          <div class="right_arrow"></div>
-        </div>
-        {{ day }}
-      </div>
-      <div class="event" :class="event.type" v-for="event in events"
-        :style="getEventStyle(event)" :key="event.uid"
-        @click="selectEvent(event)">
-        <span class="event_name">{{ event.group.course.name }}</span>
-        <span class="event_type" v-if="event.group.type">({{ event.group.group_type }})</span>
-      </div>
-    </div>
+    <Cal :events="events" @dismiss="dismissCourse" :dismissed="dismissed" />
     <div class="schedule_delimetr">
     </div>
     <div class="schedule_forms">
@@ -25,83 +9,77 @@
         <div class="schedule_add-title plus-sign changable form_title">Добавить курс</div>
         <input type="text" placeholder="Название" required autocomplete="off"
           v-model="newCourse.name" class="input_wide">
-        <dropDown placeholder="Выбрать преподавателя" v-model:selected="newCourse.teacherUid"
-          nested :options="teachers" v-if="teachers" nested-param="full_name"
+        <dropDown placeholder="Выбрать преподавателя" v-model:selected="newCourse.executiveUid"
+          nested :options="admins" v-if="admins" nested-param="fullName"
           ref="teacherDropdown"/>
         <textarea class="input_wide" v-model="newCourse.description"
           placeholder="Описание курса"></textarea>
-          <!-- <dropDown placeholder="Выбрать день" v-model:selected="newCourse.day" indexed
-          :options="days" />
-          <dropDown placeholder="Выбратьвремя"v-model:selected="newCourse.time":options="times"/>-->
-          <textarea class="input_wide" v-model="newCourse.info"
-            placeholder="Дополнительная информация"></textarea>
-        <!-- <input type="number" placeholder="Продолжительность (часов)"required autocomplete="off"
-          v-model="newCourse.duration" class="input_wide" min="1" max="11"> -->
+        <dropDown placeholder="Выбрать день" v-model:selected="newCourse.day" indexed
+          :options="days" ref="cDayDd"/>
+        <div class="form_line">
+          <dropDown placeholder="Время начала" v-model:selected="newCourse.timeStart"
+            :options="times" ref="cTimesDd"/>
+          <dropDown placeholder="Время окончания" v-model:selected="newCourse.timeEnd"
+            :options="formattedTimes" v-if="times" ref="cTimesendDd"/>
+        </div>
+        <textarea class="input_wide" v-model="newCourse.info"
+          placeholder="Дополнительная информация"></textarea>
         <button type="submit" class="btn btn_submit">Сохранить</button>
       </form>
       <form class="schedule_add-event" @submit.prevent="addNewEvent">
         <div class="schedule_add-title plus-sign changable form_title">Добавить событие</div>
-        <dropDown placeholder="Выбрать группу" unique :options="groups" v-if="groups"
-          v-model:selected="newEvent.groupId" ref="groupDd"/>
-        <dropDown placeholder="Выбрать день" indexed :options="days" v-if="days"
-          v-model:selected="newEvent.day" ref="dayDd"/>
-        <dropDown placeholder="Начало" :options="times" v-if="times"
-          v-model:selected="newEvent.timeStart" ref="timesDd"/>
-        <dropDown placeholder="Окончание" :options="formattedTimes" v-if="times"
-          v-model:selected="newEvent.timeEnd" ref="lastDd" />
-        <input type="datetime-local">
+        <input type="text" class="input_wide" placeholder="Название" v-model="newEvent.name"
+          required autocomplete="off">
+        <dropDown placeholder="Выбрать ответственного" nested :options="admins" v-if="admins"
+          v-model:selected="newEvent.executiveUid" ref="executiveDD" nested-param="fullName" />
+        <input type="datetime-local" class="input_wide input_date" v-model="newEvent.date">
+        <input type="number" min="1" max="11" class="input_wide" placeholder="Продолжительность"
+          v-model="newEvent.duration">
+        <dropDown placeholder="Возрастное ограничение" v-model:selected="newEvent.age"
+          :options="ages" ref="ageDd"/>
+        <textarea class="input_wide" v-model="newEvent.comment"
+          placeholder="Комментарий"></textarea>
         <button type="submit" class="btn btn_submit">Сохранить</button>
       </form>
     </div>
-    <transition name="appear-right">
-      <div class="event_wrapper" v-show="selectedEvent" v-if="selectedEvent">
-        <div class="event_wrapper-close" @click="closeEventView">
-          <div class="fa xmark changable"></div>
-        </div>
-        <div class="event_body"
-          :style="`background: ${getEventBackground(selectedEvent)}`">
-          <div class="event_body-title">{{ selectedEvent.group.course.name }}</div>
-          <div class="event_body-date">
-            {{ this.days[selectedEvent.day] }}
-              {{ selectedEvent.timeStart }}-{{ selectedEvent.timeEnd }}
-          </div>
-          <div class="event_body-teacher">
-            {{ extrapolate('teachers', selectedEvent.group.course.teacher_uid).full_name }}
-          </div>
-          <div class="event_body-group">{{ selectedEvent.group.group_type }}</div>
-          <div class="event_body-actions">
-            <button class="btn btn_submit" type="button"
-              @click="deleteEvent">Удалить</button>
-          </div>
-        </div>
-      </div>
-    </transition>
   </article>
 </template>
 <script>
 import dropDown from '../components/dropDown.vue';
+import Cal from '../components/calendar.vue';
 import Backend from '../services/backend.service';
 
 export default {
   name: 'ScheduleView',
-  components: { dropDown },
+  components: { dropDown, Cal },
   data() {
     return {
       backend: new Backend(),
-      days: ['', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'],
-      times: this.generateTimeSlots('11:00', '22:00', '30'),
+      ages: ['0+', '6+', '12+', '18+'],
+      days: null,
+      times: null,
+      admins: [],
       events: [],
+      dismissed: [],
+      courseDropdowns: ['teacherDropdown', 'cDayDd', 'cTimesDd', 'cTimesendDd'],
+      eventsDropdowns: ['executiveDD', 'ageDd'],
+      localStorage: this.$parent.$parent.localStorage,
       newCourse: {
         name: null,
-        teacherUid: null,
+        executiveUid: null,
         description: null,
         info: null,
-      },
-      newEvent: {
-        groupId: null,
         day: null,
         timeStart: null,
         timeEnd: null,
+      },
+      newEvent: {
+        name: null,
+        executiveUid: null,
+        date: null,
+        duration: null,
+        age: null,
+        comment: null,
       },
       courses: [],
       groups: [],
@@ -110,65 +88,35 @@ export default {
     };
   },
   methods: {
-    generateTimeSlots(timeStart, timeEnd, step) {
-      const times = [];
-      let [startHour, startMinute] = timeStart.split(':').map(Number);
-      const [endHour, endMinute] = timeEnd.split(':').map(Number);
-      const timeStep = parseInt(step, 10);
-
-      while (startHour < endHour || (startHour === endHour && startMinute <= endMinute)) {
-        const minutes = startMinute < 10 ? startMinute.toString().padStart(2, '0') : startMinute.toString();
-        times.push(
-          `${String(startHour).padStart(2, '0')}:${minutes}`,
-        );
-        startMinute += timeStep;
-        if (startMinute >= 60) {
-          startHour += 1;
-          startMinute -= 60;
-        }
-      }
-      return times;
-    },
-    getEventStyle(event) {
-      const startRow = this.times.indexOf(event.timeStart) + 2;
-      const endRow = this.times.indexOf(event.timeEnd) + 2;
-      return {
-        'grid-column': event.day + 2,
-        'grid-row': `${startRow} / ${endRow}`,
-        background: this.getEventBackground(event),
-      };
-    },
-    getEventBackground(event) {
-      const type = `${event.group.course.type}-${event.group.type}`;
-      switch (type) {
-        case 'artwork-children': return 'lightpink';
-        case 'ceramic-mixed': return 'lightgreen';
-        default: return 'lightgray';
-      }
-    },
     selectEvent(event) {
       this.selectedEvent = event;
     },
     addNewCourse() {
       this.backend.post('/courses', this.newCourse)
         .then((resp) => {
-          const course = this.newCourse;
-          course.uid = resp;
-          this.courses.push(course);
+          const courseObj = resp;
+          this.events.push(courseObj);
           this.resetInfo('newCourse');
-          this.$refs.teacherDropdown.reset();
+          this.courseDropdowns.forEach((name) => {
+            this.$refs[name].reset();
+          });
+          this.localStorage.storeEvent(courseObj.uid);
+          console.log(this.localStorage);
         })
         .catch((err) => console.error(err));
     },
     gatherEssentialData() {
       this.backend.get('/schedule/main')
         .then((resp) => {
-          this.teachers = resp.teachers;
-          this.events = resp.schedule;
+          this.events = resp.events;
+          this.admins = resp.admins;
+          this.dismissed = resp.dismissed;
           this.days = this.backend.extra.working_days;
-          this.times = this.generateTimeSlots(this.backend.extra.time_open, this.backend.extra.time_close, '30');
-          this.courses = resp.courses;
-          this.groups = resp.groups;
+          this.times = this.generateTimeSlots(
+            this.backend.extra.time_open,
+            this.backend.extra.time_close,
+            '30',
+          );
         })
         .catch((err) => console.error(err));
     },
@@ -179,36 +127,54 @@ export default {
       });
     },
     addNewEvent() {
-      this.backend.post('/schedule', this.newEvent)
+      this.backend.post('/events', this.newEvent)
         .then((resp) => {
           this.events.push(resp);
           this.resetInfo('newEvent');
-          this.$refs.groupDd.reset();
-          this.$refs.dayDd.reset();
-          this.$refs.timesDd.reset();
-          this.$refs.lastDd.reset();
+          this.eventsDropdowns.forEach((name) => {
+            this.$refs[name].reset();
+          });
+          this.localStorage.storeEvent(resp.uid);
         })
         .catch((err) => console.log(err));
     },
     extrapolate(obj, value) {
       return this[obj].filter((key) => key.uid === value)[0];
     },
-    closeEventView() {
-      this.selectedEvent = null;
-    },
     deleteEvent() {
       console.log('I wiil be deleted!');
     },
+    generateTimeSlots(hourStart, hourEnd, hourGap) {
+      const times = [];
+      let [startHour, startMinute] = hourStart.split(':').map(Number);
+      const [endHour, endMinute] = hourEnd.split(':').map(Number);
+
+      const step = parseInt(hourGap, 10);
+
+      while (startHour < endHour || (startHour === endHour && startMinute <= endMinute)) {
+        const minutes = startMinute < 10 ? startMinute.toString().padStart(2, '0') : startMinute.toString();
+        times.push(
+          `${String(startHour).padStart(2, '0')}:${minutes}`,
+        );
+        startMinute += step;
+        if (startMinute >= 60) {
+          startHour += 1;
+          startMinute -= 60;
+        }
+      }
+      return times;
+    },
+    dismissCourse(course) {
+      this.backend.put(`/course/${course.uid}`, { date: Math.floor(course.date / 1000) })
+        .then((resp) => {
+          this.dismissed.push(resp);
+        })
+        .catch((err) => console.error(err));
+    },
   },
   computed: {
-    formattedDays() {
-      const weekDays = this.days;
-      const empty = [''];
-      const days = empty.concat(weekDays);
-      return days;
-    },
     formattedTimes() {
-      const selected = this.times.indexOf(this.newEvent.timeStart) + 1;
+      const selected = this.times.indexOf(this.newCourse.timeStart) + 1;
       const endList = this.times.length;
       return selected ? this.times.slice(selected, endList) : this.times;
     },
@@ -225,6 +191,19 @@ export default {
   &_forms{
     display: flex;
     justify-content: space-around;
+    .form_line{
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      .input_wide{
+        width: 45% !important;
+      }
+      .input_dropdown{
+        margin-bottom: 0;
+        margin-top: 0;
+        width: 48%;
+      }
+    }
   }
   &_add-course,
   &_add-event{
@@ -239,108 +218,5 @@ export default {
   &_delimetr{
     margin: 30px 0;
   }
-  &_grid{
-    margin: 20px;
-    display: grid;
-    grid-template-columns: 1fr repeat(7, 1fr);
-    grid-template-rows: auto repeat(22, 1fr);
-    border-bottom: 1px solid $black;
-    border-right: 1px solid $black;
-    grid-gap: 0px;
-    user-select: none;
-    .time_slot{
-      grid-column: 1;
-      height: 25px;
-      border-right: 1px solid $black;
-      text-align: center;
-      display: flex;
-      align-items: center;
-      border-bottom: 1px solid transparent;
-      font-family: $text-font;
-      justify-content: center;
-      &:nth-child(2n) {
-        border-bottom: 1px solid $black;
-      }
-    }
-    .day_header{
-      grid-row: 1;
-      text-align: center;
-      border-bottom: 1px solid $black;
-      font-family: $text-font;
-      height: 25px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      &:nth-child(1n){
-        border-right: 1px solid $black;
-      }
-      &:nth-child(10n + 11){
-        border-right-color: transparent;
-      }
-      &-actions{
-        display: flex;
-        align-items: center;
-      }
-    }
-    .event{
-      padding: 5px;
-      border-radius: 8px;
-      text-align: center;
-      font-family: $text-font;
-      color: $black !important;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-direction: column;
-      mix-blend-mode: exclusion;
-      cursor: pointer;
-      &_name{
-        font-weight: bold;
-        font-size: 16px;
-      }
-      &_type{
-        font-size: 12px;
-      }
-    }
-  }
-  .event_wrapper{
-    position: absolute;
-    font-family: $text-font;
-    right: 10px;
-    top: calc(50% - 200px);
-    width: 200px;
-    height: 400px;
-    border-radius: 10px;
-    &-close{
-      position: absolute;
-      left: 2px;
-      top: 2px;
-      border-radius: 4px;
-      height: 25px;
-      width: 25px;
-    }
-    .event_body{
-      &-title{
-        font-weight: bold;
-        font-size: 18px;
-        text-align: center;
-        margin-bottom: 5px;
-      }
-      border-radius: inherit;
-      padding: 24px 12px;
-      height: 100%;
-    }
-  }
-}
-.appear-right-enter-active{
-  animation: slide-left .6s ease-in-out;
-}
-.appear-right-leave-active{
-  animation: slide-left .6s ease-in-out reverse;
-}
-
-@keyframes slide-left {
-  0%{ transform: translateX(100%); }
-  100% { transform: translateX(0%); }
 }
 </style>

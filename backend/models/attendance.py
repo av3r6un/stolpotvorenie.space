@@ -43,7 +43,7 @@ class Attendance(db.Model):
   
   def _add_to_history(self, temp_uid) -> None:
     from .clients import Clients, Children
-    from .schedule import Schedule
+    from .schedule_old import Schedule
     just_created = self.query.filter_by(uid=temp_uid).first()
     client = (
       Clients.query.filter_by(uid=just_created.client_uid).one_or_none()

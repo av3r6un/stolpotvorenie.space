@@ -31,18 +31,12 @@
             <span class="sidebar_item-title" v-if="!short">Посещения</span>
           </router-link>
         </li>
-        <li class="sidebar_item" :class="short ? 'short' : ''">
-          <router-link to="/teachers" class="base_link">
-            <mIcon name="teachers" />
-            <span class="sidebar_item-title" v-if="!short">Преподаватели</span>
-          </router-link>
-        </li>
         <li class="sidebar_item" :class="short ? 'short' : ''"
           v-if="$store.getters.isAuth">
-          <div class="base_link" @click="$store.dispatch('logout')">
+          <router-link to="/profile" class="base_link">
             <mIcon name="logout" />
-            <span class="sidebar_item-title" v-if="!short">{{ $store.getters.name }}</span>
-          </div>
+            <span class="sidebar_item-title" v-if="!short">{{ displayName }}</span>
+          </router-link>
         </li>
         <li class="sidebar_item" :class="short ? 'short': ''" v-else>
           <router-link to="/login" class="base_link">
@@ -94,6 +88,9 @@ export default {
   computed: {
     arrows() {
       return `arrow-${this.short ? 'right' : 'left'}`;
+    },
+    displayName() {
+      return this.$store.getters.name ? this.$store.getters.name : this.$store.getters.login;
     },
   },
   mounted() {

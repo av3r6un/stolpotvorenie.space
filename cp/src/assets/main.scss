@@ -16,13 +16,13 @@ body{
       color: $white;
       border-color: $white;
     }
-    .time_slot.changable{
+    .calendar_time.changable{
       border-color: $white;
       &:nth-child(2n+1) {
         border-bottom: 1px solid transparent !important;
       }
     }
-    .day_header.changable{
+    .calendar_day.changable{
       border-color: $white;
     }
     background-color: $bg-color;
@@ -63,18 +63,14 @@ body{
     margin-bottom: 10px;
   }
 }
-
 .input_dropdown{
   .input_wide{
-    margin-bottom: 10px;
-    &:last-of-type{
-      margin-bottom: 10px;
-    }
+    margin-bottom: 0;
   }
+  margin-bottom: 10px;
   &:last-of-type{
-    .input_wide{
-      margin-bottom: 0;
-    }
+    margin-bottom: 0;
+    margin-top: 10px;
   }
 }
 
@@ -82,6 +78,7 @@ textarea.input_wide{
   min-height: 70px;
   resize: none;
   padding-top: 5px;
+  display: block;
   &::-webkit-scrollbar{
     width: 4px;
     background: none;
@@ -90,6 +87,9 @@ textarea.input_wide{
       border-radius: 4px;
       background: rgba($color: $black, $alpha: 0.2);
     }
+  }
+  &:last-of-type{
+    margin-top: 10px;
   }
 }
 
@@ -118,6 +118,18 @@ textarea.input_wide{
   opacity: 0;
   position: absolute;
 }
+.input_date{
+  padding-right: 10px;
+  color: $semi-black;
+  &::-webkit-datetime-edit-year-field,
+  &::-webkit-datetime-edit-month-field,
+  &::-webkit-datetime-edit-day-field,
+  &::-webkit-datetime-edit-hour-field,
+  &::-webkit-datetime-edit-text,
+  &::-webkit-datetime-edit-minute-field {
+    color: $black;
+  }
+}
 
 .main_content{
   position: absolute;
@@ -126,7 +138,7 @@ textarea.input_wide{
   min-height: 100vh;
   z-index: -1;
   transition: left .4s ease-in, background .4s ease-in, width .4s ease-in;
-  padding: 25px 0 0 25px;
+  padding: 25px 25px 0 25px;
   box-sizing: border-box;
   &.full{
     left: 75px;
@@ -135,6 +147,7 @@ textarea.input_wide{
   &.dark{
     background: $bg-color;
   }
+  padding-bottom: 40px;
 }
 
 .base_form{
@@ -171,6 +184,7 @@ textarea.input_wide{
 .right_arrow,
 .chevron_bottom,
 .fa{
+  font-style: normal;
   position: relative;
   height: 25px;
   width: 25px;
@@ -199,4 +213,15 @@ textarea.input_wide{
 
 .xmark:before{
   content: '\f00d';
+}
+
+.validatable{
+  border: 1px solid transparent;
+  &.invalid{
+    border-color: $red;
+    color: $red;
+  }
+  &.valid{
+    border-color: $green;
+  }
 }

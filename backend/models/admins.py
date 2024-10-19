@@ -12,6 +12,9 @@ class Admins(db.Model):
   email = db.Column(db.String(100), nullable=True, unique=True)
   tg_id = db.Column(db.Integer, nullable=False, unique=True)
   password = db.Column(db.String(255), nullable=False)
+  name = db.Column(db.String(50), nullable=True)
+  surname = db.Column(db.String(50), nullable=True)
+  patronymic = db.Column(db.String(50), nullable=True)
   superuser = db.Column(db.Boolean, nullable=False, default=False)
 
   def __init__(self, login: str, password: str, tg_id: int, email: str = None, **kwargs) -> None:
@@ -58,13 +61,22 @@ class Admins(db.Model):
 
   @property
   def base_info(self) -> dict:
-    return dict(uid=self.uid, login=self.login, superuser=self.superuser)
+    return dict(uid=self.uid, login=self.login, superuser=self.superuser, name=self.name,
+                surname=self.surname, patronymic=self.patronymic)
   
   @property
   def json(self) -> dict:
     bi = self.base_info
     bi.update(dict(email=self.email))
     return bi
+  
+  @property
+  def full_name(self) -> str:
+    return f'{self.surname} {self.name} {self.patronymic if self.patronymic else ""}'.strip()
+
+  @property
+  def executive_info(self) -> dict:
+    return dict(uid=self.uid, name=self.name, surname=self.surname, patronymic=self.patronymic, fullName=self.full_name)
   
   def collect_info(self, **kwargs) -> dict:
     info = self.base_info
@@ -89,6 +101,14 @@ class Admins(db.Model):
       return ValidationError('login', 'not_found')
     return admin._restore(password)
   
+  @classmethod
+  def all(cls) -> dict:
+    return [a.json for a in cls.query.all()]
+  
+  @classmethod
+  def all_executive(cls) -> dict:
+    return [a.executive_info for a in cls.query.all()]
+  
   def _login(self, password, rm=False) -> dict:
     if not bcrypt.check_password_hash(self.password, password):
       raise ValidationError('register', 'passwords_mismatch')
@@ -97,6 +117,19 @@ class Admins(db.Model):
     extra = dict(accs_token=accs_token, rfsh_token=rfsh_token)
     db.session.commit()
     return self.collect_info(**extra)
+  
+  def edit_persona(self, login, name, surname, patronymic=None, **kwargs) -> None:
+    if self.login != login: self.login = login
+    if self.name != name: self.name = name
+    if self.surname != surname: self.surname = surname
+    if self.patronymic != patronymic: self.patronymic = patronymic
+    db.session.commit()
+
+  def update_password(self, old, new, **kwargs) -> None:
+    if not bcrypt.check_password_hash(self.password, old):
+      raise ValidationError('register', 'password_mismatch')
+    self.password = bcrypt.generate_password_hash(new)
+    db.session.commit()
   
   def _restore(self, password) -> bool:
     self.password = bcrypt.generate_password_hash(password)

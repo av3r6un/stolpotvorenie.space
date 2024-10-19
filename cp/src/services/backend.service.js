@@ -43,7 +43,7 @@ class Backend {
 
   async put(url, data) {
     return request
-      .post(url, data)
+      .put(url, data)
       .then((resp) => this.manageResp(resp))
       .catch((err) => this.manageError(err));
   }

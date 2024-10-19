@@ -32,7 +32,6 @@ export default {
     },
   },
   mounted() {
-    console.log(this.$parent);
     this.$parent.$parent.$refs.sideBar.hideSidebar();
   },
 };
@@ -45,6 +44,9 @@ export default {
   justify-content: center;
   &_wrapper{
     max-width: 420px;
+  }
+  .base_title{
+    margin-bottom: 10px;
   }
 }
 </style>
