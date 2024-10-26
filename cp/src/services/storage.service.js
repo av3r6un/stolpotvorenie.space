@@ -1,6 +1,15 @@
 class Storage {
   newEventsList = {};
 
+  themeColors = {
+    dark: false,
+    artwork: '#CAFDD8',
+    ceramic: '#61BE91',
+    event: '#B16959',
+    lection: '#FCCAFD',
+    default: 'lightgrey',
+  };
+
   constructor() {
     this.loadStorage();
   }
@@ -11,6 +20,12 @@ class Storage {
     if (events) {
       const validEvents = this.validateEvents(events);
       this.newEventsList = { ...validEvents };
+    }
+    const bS = localStorage.getItem('_settings');
+    if (!bS) {
+      localStorage.setItem('_settings', JSON.stringify(this.themeColors));
+    } else {
+      this.themeColors = { ...JSON.parse(bS) };
     }
   }
 
@@ -34,6 +49,11 @@ class Storage {
     return new Date() / 1000;
   }
 
+  changeColorSettings(name, color) {
+    this.themeColors[name] = color;
+    localStorage.setItem('_settings', JSON.stringify(this.themeColors));
+  }
+
   olderThen(datetime, hours) {
     const dt = new Date(datetime * 1000);
     const now = this.timeNow();
@@ -44,6 +64,7 @@ class Storage {
 
   save() {
     localStorage.setItem('_events', JSON.stringify(this.newEventsList));
+    localStorage.setItem('_settings', JSON.stringify(this.baseSettings));
   }
 }
 

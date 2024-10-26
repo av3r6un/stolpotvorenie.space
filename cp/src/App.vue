@@ -27,6 +27,14 @@ export default {
     toggleTheme(dark) {
       this.dark = dark;
     },
+    changeGlobalTheme() {
+      this.dark = this.localStorage.themeColors.dark;
+      this.$refs.sideBar.dark = this.localStorage.themeColors.dark;
+    },
+  },
+  mounted() {
+    this.toggleTheme(this.localStorage.themeColors.dark);
+    this.$refs.sideBar.dark = this.localStorage.themeColors.dark;
   },
 };
 </script>

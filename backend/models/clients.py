@@ -28,7 +28,8 @@ class Clients(db.Model):
 
   @property
   def json(self):
-    return dict(uid=self.uid, name=self.name, surname=self.surname, phone=self.phone_number, email=self.email)
+    return dict(uid=self.uid, name=self.name, surname=self.surname, phone=self.phone_number, email=self.email,
+                fullName=self.full_name)
   
   @property
   def phone_number(self):
@@ -36,7 +37,7 @@ class Clients(db.Model):
 
   @property
   def full_name(self):
-    return f'{self.surname} {self.name} {self.patronymic}'.strip()
+    return f'{self.surname} {self.name} {self.patronymic if self.patronymic else ""}'.strip()
 
   @property
   def base_info(self):

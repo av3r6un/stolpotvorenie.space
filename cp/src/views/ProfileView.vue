@@ -25,6 +25,12 @@
           v-model="changePass.new2" ref="validatable">
         <button type="submit" class="btn btn_submit">Сохранить</button>
       </form>
+      <form class="profile_form-edit-theme profile_form" @submit.prevent="editTheme">
+        <div class="profile_forms-title plus-sign changable form_title">Изменить тему</div>
+        <dropDown placeholder="Выбрать тему" :options="pageThemes" nested
+          v-model:selected="themeSettings.dark" ref="darkThemeDD" />
+        <button type="submit" class="btn btn_submit">Сохранить</button>
+      </form>
     </div>
     <div class="profile_leave">
       <button type="button" class="btn btn_submit"
@@ -34,9 +40,11 @@
 </template>
 <script>
 import Backend from '@/services/backend.service';
+import dropDown from '@/components/dropDown.vue';
 
 export default {
   name: 'ProfileView',
+  components: { dropDown },
   data() {
     return {
       backend: new Backend(),
@@ -46,6 +54,13 @@ export default {
         new: null,
         new2: null,
       },
+      themeSettings: {
+        dark: false,
+      },
+      pageThemes: [
+        { uid: false, name: 'Светлая' },
+        { uid: true, name: 'Тёмная' },
+      ],
     };
   },
   methods: {
@@ -71,6 +86,13 @@ export default {
         })
         .catch((err) => console.error(err));
     },
+    editTheme() {
+      Object.keys(this.themeSettings).forEach((key) => {
+        this.$parent.$parent.localStorage.changeColorSettings(key, this.themeSettings[key]);
+      });
+      this.$refs.darkThemeDD.reset();
+      this.$parent.$parent.changeGlobalTheme();
+    },
     validate() {
       const isValidPassword = this.changePass.new === this.changePass.new2;
       return isValidPassword ? this.$refs.validatable.classList.remove('invalid') : this.$refs.validatable.classList.add('invalid');
@@ -91,6 +113,7 @@ export default {
   &_forms{
     display: flex;
     justify-content: space-around;
+    flex-wrap: wrap;
   }
   &_form{
     max-width: 400px;
