@@ -238,23 +238,25 @@ textarea.input_wide{
   &-group{
     margin: 25px 15px 0 0;
   }
-  height: 100px;
-  padding: 20px;
-  font-family: $text-font;
-  display: flex;
-  justify-content: center;
-  align-items: flex-end;
-  flex-direction: column;
+  &-template{
+    height: 100px;
+    padding: 20px;
+    font-family: $text-font;
+    display: flex !important;
+    justify-content: center !important;
+    align-items: flex-end !important ;
+    flex-direction: column;
+    color: $white;
+    border-left: none;
+    border-radius: 10px;
+    text-shadow: $text-shadow;
+  }
   &.error{
     background: linear-gradient(to right, $green, #872A1E) !important;
   }
   &.success{
     background: linear-gradient(to right, $green, #52C94A) !important;
   }
-  color: $white;
-  border-left: none;
-  border-radius: 10px;
-  text-shadow: $text-shadow;
   .notification{
     &-title{
       font-size: 20px;
@@ -263,7 +265,6 @@ textarea.input_wide{
       font-size: 18px;
     }
   }
-
   &:before{
     position: absolute;
     content: '\f00d';
@@ -276,7 +277,6 @@ textarea.input_wide{
     cursor: pointer;
   }
 }
-
 
 .text_link{
   text-decoration: underline;

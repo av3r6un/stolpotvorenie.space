@@ -7,7 +7,7 @@ import store from './store';
 import '@/assets/main.scss';
 
 createApp(App)
-  .use(store)
   .use(router)
+  .use(store)
   .use(Notifications)
   .mount('#app');
