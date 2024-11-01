@@ -13,6 +13,7 @@ module.exports = defineConfig({
     appleMobileWebAppCapable: 'yes',
     appleMobileWebAppStatusBarStyle: '#374536',
   },
+  outputDir: '../frontend/cp',
   devServer: {
     proxy: {
       '/api': {

@@ -13,12 +13,12 @@
             <span class="sidebar_item-title" v-if="!short">Пользователи</span>
           </router-link>
         </li>
-        <li class="sidebar_item" :class="short ? 'short' : ''">
+        <!-- <li class="sidebar_item" :class="short ? 'short' : ''">
           <router-link to="/groups" class="base_link">
             <mIcon name="user-groups" />
             <span class="sidebar_item-title" v-if="!short">Группы</span>
           </router-link>
-        </li>
+        </li> -->
         <li class="sidebar_item" :class="short ? 'short' : ''">
           <router-link to="/schedule" class="base_link">
             <mIcon name="schedule" />
@@ -34,7 +34,7 @@
         <li class="sidebar_item" :class="short ? 'short' : ''"
           v-if="$store.getters.isAuth">
           <router-link to="/profile" class="base_link">
-            <mIcon name="logout" />
+            <mIcon name="user-settings" />
             <span class="sidebar_item-title" v-if="!short">{{ displayName }}</span>
           </router-link>
         </li>

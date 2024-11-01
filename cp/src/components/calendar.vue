@@ -89,6 +89,7 @@ export default {
       currentYear: new Date().getFullYear(),
       diff: 0,
       selectedEventWeek: null,
+      localStorage: this.$parent.$parent.$parent.localStorage,
     };
   },
   methods: {
@@ -128,10 +129,11 @@ export default {
     },
     getEventBackground(event) {
       switch (event.type) {
-        case 'artwork': return '#CAFDD8';
-        case 'ceramic': return '#61BE91';
-        case 'event': return '#B16959';
-        default: return 'lightgray';
+        case 'artwork': return this.localStorage.themeColors.artwork;
+        case 'ceramic': return this.localStorage.themeColors.ceramic;
+        case 'event': return this.localStorage.themeColors.event;
+        case 'lection': return this.localStorage.themeColors.lecture;
+        default: return this.localStorage.themeColors.default;
       }
     },
     currentWeek() {
@@ -159,7 +161,6 @@ export default {
       const eventDate = new Date(event.date * 1000);
       const thisWeek = this.currentDate.clone().week() === eventDate.getWeek();
       const notExcluded = this.isDismissedEvent(event.uid, this.currentDate.clone().week());
-      console.log(event.name, notExcluded, thisWeek);
       return event.type === 'event' ? thisWeek : !notExcluded;
     },
     isDismissedEvent(uid, week) {
@@ -188,6 +189,11 @@ export default {
       }
       this.selectedEvent = null;
       this.$emit('dismiss', event);
+    },
+    deleteEvent() {
+      const event = { ...this.selectedEvent };
+      this.selectedEvent = null;
+      this.$emit('delete', event);
     },
   },
   computed: {

@@ -27,8 +27,14 @@ class Courses(db.Model):
     db.session.commit()
 
   @classmethod
-  def all(cls):
+  def all(cls) -> list:
     return [a.json for a in cls.query.all()]
+  
+  @classmethod
+  def delete(cls, uid) -> None:
+    course = cls.query.filter_by(uid=uid).first()
+    db.session.delete(course)
+    db.session.commit()
   
   @property
   def executive(self):

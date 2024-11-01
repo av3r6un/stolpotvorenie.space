@@ -1,5 +1,5 @@
 <template>
-  <div class="m-icon" :class="active ? 'active' : ''"
+  <div class="m-icon" :class="[active ? 'active' : '', reversed ? 'reverse': '']"
     ref="mainIcon" :width="width" :height="height" @click="$emit('click')">
     <svg :width="width" :height="height" xmlns="http://www.w3.org/2000/svg" class="icon">
       <image :xlink:href="detectUri" :width="width" :height="height" />
@@ -26,9 +26,16 @@ export default {
       type: Boolean,
       default: false,
     },
+    reversed: {
+      type: Boolean,
+      default: false,
+    },
   },
   data() {
-    return {};
+    return {
+      green: '#374536',
+      white: '#FCE7CC',
+    };
   },
   computed: {
     detectUri() {
@@ -38,10 +45,15 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
+@import "@/assets/variables.scss";
+
 .m-icon{
   box-sizing: border-box;
   display: flex;
   cursor: pointer;
+  &.reverse{
+    filter: invert(100%) sepia(22%) saturate(105%) hue-rotate(2deg) brightness(95%) contrast(89%);
+  }
   &.active{
     display: flex;
     align-items: center;

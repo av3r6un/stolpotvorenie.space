@@ -14,7 +14,7 @@ def login():
   user_data['last_ip'] = req.remote_addr
   try:
     creds = Users.login(**user_data)
-    return jsonify(dict(status='success', body=creds))
+    return jsonify(dict(status='success', body=creds, message="Вы авторизованы"))
   except ValidationError as valid:
     return jsonify(valid.json), 400
   
@@ -51,7 +51,7 @@ def login_admin():
   user_data = req.get_json()
   try:
     creds = Admins.log_in(**user_data)
-    return jsonify(dict(status='success', body=creds))
+    return jsonify(dict(status='success', body=creds, message="Вы авторизованы"))
   except ValidationError as valid:
     return jsonify(valid.json), 400
 

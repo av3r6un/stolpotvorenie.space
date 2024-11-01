@@ -19,7 +19,7 @@ class AuthService {
         }
         return resp.data;
       })
-      .catch((err) => err.response.data);
+      .catch((err) => Promise.reject(err));
   }
 
   async logout() {

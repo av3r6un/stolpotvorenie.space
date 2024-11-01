@@ -5,16 +5,18 @@
       <form class="login_form" @submit.prevent="login">
         <input type="text" class="input_wide" required autofocus autocomplete="off"
           placeholder="Логин" v-model="userInfo.login">
-        <input type="password" class="input_wide" required autocomplete="off"
-          placeholder="Пароль" v-model="userInfo.password">
+        <PassInput placeholder="Пароль" required v-model:text="userInfo.password" />
         <button type="submit" class="btn btn_submit">Войти</button>
       </form>
     </div>
   </article>
 </template>
 <script>
+import PassInput from '@/components/PassInput.vue';
+
 export default {
   name: 'LoginView',
+  components: { PassInput },
   data() {
     return {
       userInfo: {
@@ -27,7 +29,18 @@ export default {
     login() {
       this.$store.dispatch('login', this.userInfo)
         .then((resp) => {
-          console.log(resp);
+          this.$notify({
+            title: resp.status === 'success' ? 'Успешно!' : 'Ошибка!',
+            text: resp.message,
+            type: resp.status,
+          });
+        })
+        .catch((err) => {
+          this.$notify({
+            title: err.response.data.status === 'success' ? 'Успешно' : 'Ошибка!',
+            text: err.response.data.message,
+            type: err.response.data.status,
+          });
         });
     },
   },
@@ -43,7 +56,8 @@ export default {
   align-items: center;
   justify-content: center;
   &_wrapper{
-    max-width: 420px;
+    max-width: 400px;
+    width: 100%;
   }
   .base_title{
     margin-bottom: 10px;

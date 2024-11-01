@@ -47,6 +47,7 @@ body{
   box-sizing: border-box;
   &:placeholder{
     color: $semi-black;
+    user-select: none;
   }
   // &.not-valid{
   //   border-bottom-color: $red;
@@ -214,6 +215,12 @@ textarea.input_wide{
 .xmark:before{
   content: '\f00d';
 }
+.fa-reveal:before{
+  content: '\f06e';
+}
+.fa-unveal:before{
+  content: '\f070';
+}
 
 .validatable{
   border: 1px solid transparent;
@@ -224,4 +231,54 @@ textarea.input_wide{
   &.valid{
     border-color: $green;
   }
+}
+
+
+.vue-notification{
+  &-group{
+    margin: 25px 15px 0 0;
+  }
+  height: 100px;
+  padding: 20px;
+  font-family: $text-font;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  flex-direction: column;
+  &.error{
+    background: linear-gradient(to right, $green, #872A1E) !important;
+  }
+  &.success{
+    background: linear-gradient(to right, $green, #52C94A) !important;
+  }
+  color: $white;
+  border-left: none;
+  border-radius: 10px;
+  text-shadow: $text-shadow;
+  .notification{
+    &-title{
+      font-size: 20px;
+    }
+    &-content{
+      font-size: 18px;
+    }
+  }
+
+  &:before{
+    position: absolute;
+    content: '\f00d';
+    top: 10px;
+    left: 20px;
+    width: 20px;
+    height: 20px;
+    font-size: 20px;
+    font-family: 'FontAwesome';
+    cursor: pointer;
+  }
+}
+
+
+.text_link{
+  text-decoration: underline;
+  text-underline-offset: 3px;
 }

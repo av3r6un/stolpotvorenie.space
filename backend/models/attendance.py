@@ -5,7 +5,7 @@ from backend.exceptions import ValidationError
 
 class Attendance(db.Model):
   uid = db.Column(db.String(12), primary_key=True)
-  client_uid = db.Column(db.String(7), db.ForeignKey('clients.uid'), nullable=False)
+  client_uid = db.Column(db.String(7), nullable=False)
   is_mature = db.Column(db.Boolean, nullable=False, default=True)
   date = db.Column(db.Integer, nullable=False, default=int(dt.now().timestamp()))
   schedule_uid = db.Column(db.String(11), db.ForeignKey('schedule.uid'), nullable=False)

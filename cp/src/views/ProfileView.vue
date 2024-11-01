@@ -16,21 +16,17 @@
       </form>
       <form class="profile_form-edit_password profile_form" @submit.prevent="changePassword">
         <div class="profile_forms-title plus-sign changable form_title">Изменить пароль</div>
-        <input type="password" required autocomplete="off" placeholder="Старый пароль"
-          class="input_wide" v-model="changePass.old">
-        <input type="password" required autocomplete="off" placeholder="Новый пароль"
-          class="input_wide" v-model="changePass.new">
-        <input type="password" required autocomplete="off" @input="validate"
-          placeholder="Подтвердите новый пароль" class="input_wide validatable"
-          v-model="changePass.new2" ref="validatable">
+        <PassInput required placeholder="Старый пароль" v-model:text="changePass.old" />
+        <PassInput required placeholder="Новый пароль" v-model:text="changePass.new" />
+        <PassInput required placeholder="Подтвердите новый пароль" v-model:text="changePass.new2"
+          ref="validatable" @input="validate" class="validatable"/>
         <button type="submit" class="btn btn_submit">Сохранить</button>
       </form>
-      <form class="profile_form-edit-theme profile_form" @submit.prevent="editTheme">
-        <div class="profile_forms-title plus-sign changable form_title">Изменить тему</div>
-        <dropDown placeholder="Выбрать тему" :options="pageThemes" nested
-          v-model:selected="themeSettings.dark" ref="darkThemeDD" />
-        <button type="submit" class="btn btn_submit">Сохранить</button>
-      </form>
+    </div>
+    <div class="profile_form-toggle">
+      <mIcon name="sun" :reversed="!localStorage.themeColors.dark"/>
+      <Toggle v-model:checked="localStorage.themeColors.dark" />
+      <mIcon name="moon" :reversed="!localStorage.themeColors.dark"/>
     </div>
     <div class="profile_leave">
       <button type="button" class="btn btn_submit"
@@ -40,22 +36,22 @@
 </template>
 <script>
 import Backend from '@/services/backend.service';
-import dropDown from '@/components/dropDown.vue';
+import Toggle from '@/components/toggle.vue';
+import PassInput from '@/components/PassInput.vue';
+import mIcon from '@/components/materialIcon.vue';
 
 export default {
   name: 'ProfileView',
-  components: { dropDown },
+  components: { mIcon, Toggle, PassInput },
   data() {
     return {
       backend: new Backend(),
       profileInfo: {},
+      localStorage: this.$parent.$parent.localStorage,
       changePass: {
         old: null,
         new: null,
         new2: null,
-      },
-      themeSettings: {
-        dark: false,
       },
       pageThemes: [
         { uid: false, name: 'Светлая' },
@@ -86,21 +82,23 @@ export default {
         })
         .catch((err) => console.error(err));
     },
-    editTheme() {
-      Object.keys(this.themeSettings).forEach((key) => {
-        this.$parent.$parent.localStorage.changeColorSettings(key, this.themeSettings[key]);
-      });
-      this.$refs.darkThemeDD.reset();
+    editTheme(value) {
+      this.localStorage.changeColorSettings('dark', value);
       this.$parent.$parent.changeGlobalTheme();
     },
     validate() {
+      const inputObj = this.$refs.validatable.$el;
       const isValidPassword = this.changePass.new === this.changePass.new2;
-      return isValidPassword ? this.$refs.validatable.classList.remove('invalid') : this.$refs.validatable.classList.add('invalid');
+      return isValidPassword ? inputObj.classList.remove('invalid') : inputObj.classList.add('invalid');
     },
   },
   computed: {},
   mounted() {
     this.gatherEssentialsData();
+    console.log(this.$refs);
+  },
+  watch: {
+    'localStorage.themeColors.dark': 'editTheme',
   },
 };
 </script>
@@ -114,9 +112,47 @@ export default {
     display: flex;
     justify-content: space-around;
     flex-wrap: wrap;
+    max-width: 85%;
+    .profile_form{
+      min-width: 300px;
+    }
+    @media screen {
+      @media (max-width: 640px) {
+        max-width: 95%;
+        .profile_form{
+          margin-top: 10px;
+          &:first-of-type{
+            margin-top: 0;
+          }
+        }
+      }
+    }
   }
   &_form{
     max-width: 400px;
+    &-toggle{
+      position: absolute;
+      @media screen {
+        @media (max-width: 640px) {
+          position: relative;
+          display: flex;
+          top: auto;
+          right: auto;
+          justify-content: center;
+          margin-top: 10px;
+        }
+      }
+      right: 15px;
+      top: 40px;
+      display: flex;
+      align-items: center;
+    }
+  }
+  &_leave{
+    margin-top: 15px;
+    .btn_submit{
+      margin-top: 0px;
+    }
   }
 }
 </style>

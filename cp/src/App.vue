@@ -1,17 +1,19 @@
 <template>
   <sideBar @sidebar-toggled="toggleContent" @theme="toggleTheme"
     ref="sideBar"/>
+  <Notifications width="340" :max="3" ignore-duplicates/>
   <router-view class="main_content"
     :class="[!short ? 'full' : '', dark ? 'dark' : '']"/>
 </template>
 <script>
+import { Notifications } from '@kyvg/vue3-notification';
 import sideBar from '@/components/sideBar.vue';
 import Storage from './services/storage.service';
 
 export default {
   name: 'App',
   components: {
-    sideBar,
+    sideBar, Notifications,
   },
   data() {
     return {

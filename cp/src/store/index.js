@@ -58,7 +58,7 @@ export default createStore({
           commit('login', userData);
           return Promise.resolve(userData);
         })
-        .catch((err) => console.error(err));
+        .catch((err) => Promise.reject(err));
     },
     async logout({ commit }) {
       AuthService.logout();

@@ -3,10 +3,10 @@ class Storage {
 
   themeColors = {
     dark: false,
-    artwork: '#CAFDD8',
-    ceramic: '#61BE91',
-    event: '#B16959',
-    lection: '#FCCAFD',
+    artwork: '#ff9501', // '#F6C3AE', '#CAFDD8',
+    ceramic: '#83afee', // '#9AB2D4', '#61BE91',
+    event: '#e99ddd', // '#AAD59E', '#B16959',
+    lection: '#4c5f43', // '#F0743E', // '#FCCAFD',
     default: 'lightgrey',
   };
 
@@ -64,7 +64,7 @@ class Storage {
 
   save() {
     localStorage.setItem('_events', JSON.stringify(this.newEventsList));
-    localStorage.setItem('_settings', JSON.stringify(this.baseSettings));
+    localStorage.setItem('_settings', JSON.stringify(this.themeColors));
   }
 }
 

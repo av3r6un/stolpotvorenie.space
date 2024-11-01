@@ -1,4 +1,7 @@
+import { useNotification } from '@kyvg/vue3-notification';
 import request from './axios.service';
+
+const { notify } = useNotification();
 
 class Backend {
   msg = null;
@@ -18,12 +21,24 @@ class Backend {
     result = resp.body ? resp.body : null;
     this.extra = resp.extra;
 
+    if (this.msg && this.msg !== '') {
+      notify({
+        title: 'Успешно!',
+        text: this.msg,
+        type: 'success',
+      });
+    }
     return result;
   }
 
   manageError(err) {
     this.status = 'error';
-    // this.msg = err.response.msg;
+    this.msg = err.response.msg;
+    notify({
+      title: 'Ошибка!',
+      text: this.msg,
+      type: this.status,
+    });
     return err;
   }
 

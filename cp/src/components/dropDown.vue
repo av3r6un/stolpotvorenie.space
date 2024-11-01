@@ -131,6 +131,7 @@ export default {
   }
   &-icon{
     &.opened{
+      // backface-visibility: hidden;
       transform: rotateX(180deg);
     }
     position: absolute;

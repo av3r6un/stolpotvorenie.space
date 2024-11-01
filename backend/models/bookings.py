@@ -77,7 +77,7 @@ class Bookings(db.Model):
   def _validate_number(phone):
     number = parse_num(phone)
     if not is_valid_number(number):
-      raise ValidationError('booking', 'not_valid_phone')
+      raise ValidationError('register', 'not_valid_phone')
     return number.national_number
   
   @classmethod

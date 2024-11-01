@@ -6,4 +6,5 @@ from .attendance import Attendance, AttendanceHistory
 from .events import Events
 from .courses import Courses
 from .dismissed import Dismissed
+from .groups import Groups
 

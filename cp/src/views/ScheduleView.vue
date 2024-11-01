@@ -1,7 +1,8 @@
 <template>
   <article class="schedule">
     <div class="base_title changable">Расписание</div>
-    <Cal :events="events" @dismiss="dismissCourse" :dismissed="dismissed" />
+    <Cal :events="events" @dismiss="dismissCourse" :dismissed="dismissed"
+      @delete="deleteEvent"/>
     <div class="schedule_delimetr">
     </div>
     <div class="schedule_forms">
@@ -141,8 +142,13 @@ export default {
     extrapolate(obj, value) {
       return this[obj].filter((key) => key.uid === value)[0];
     },
-    deleteEvent() {
-      console.log('I wiil be deleted!');
+    deleteEvent(event) {
+      const url = `/${event.type}/${event.uid}`;
+      this.backend.delete(url)
+        .then((resp) => {
+          console.log(resp);
+        })
+        .catch((err) => console.error(err));
     },
     generateTimeSlots(hourStart, hourEnd, hourGap) {
       const times = [];

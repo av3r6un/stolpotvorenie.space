@@ -111,7 +111,7 @@ class Admins(db.Model):
   
   def _login(self, password, rm=False) -> dict:
     if not bcrypt.check_password_hash(self.password, password):
-      raise ValidationError('register', 'passwords_mismatch')
+      raise ValidationError('login', 'passwords_mismatch')
     accs_token = create_access_token(self.uid, fresh=not rm)
     rfsh_token = create_refresh_token(self.uid)
     extra = dict(accs_token=accs_token, rfsh_token=rfsh_token)
@@ -127,7 +127,7 @@ class Admins(db.Model):
 
   def update_password(self, old, new, **kwargs) -> None:
     if not bcrypt.check_password_hash(self.password, old):
-      raise ValidationError('register', 'password_mismatch')
+      raise ValidationError('login', 'passwords_mismatch')
     self.password = bcrypt.generate_password_hash(new)
     db.session.commit()
   

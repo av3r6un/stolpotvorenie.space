@@ -5,7 +5,6 @@ class Groups(db.Model):
   id = db.Column(db.Integer, primary_key=True)
   course_uid = db.Column(db.String(10), db.ForeignKey('courses.uid'), nullable=False)
   type = db.Column(db.String(6), nullable=False) # ['mature', 'children', 'mixed']
-  steaded = db.Column(db.Boolean, nullable=False, default=True)
   pupils = db.Column(db.Text, nullable=True)
   
   def __init__(self, courseUid, type, steaded, **kwargs) -> None:
