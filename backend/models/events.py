@@ -10,7 +10,7 @@ class Events(db.Model):
   date = db.Column(db.Integer, nullable=False)
   time_start = db.Column(db.Integer, nullable=False)
   time_end = db.Column(db.Integer, nullable=False)
-  executive_uid = db.Column(db.String(), db.ForeignKey('admins.uid'), nullable=False)
+  executive_uid = db.Column(db.String(4), db.ForeignKey('admins.uid'), nullable=False)
   age = db.Column(db.Integer, nullable=False, default=0)
   comment = db.Column(db.Text, nullable=True)
 
