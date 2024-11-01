@@ -33,6 +33,12 @@ export default {
       this.dark = this.localStorage.themeColors.dark;
       this.$refs.sideBar.dark = this.localStorage.themeColors.dark;
     },
+    manageTitle() {
+      document.title = `${this.$route.name} - Панель управления`;
+    },
+  },
+  watch: {
+    $route: 'manageTitle',
   },
   mounted() {
     this.toggleTheme(this.localStorage.themeColors.dark);

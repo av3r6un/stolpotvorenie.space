@@ -12,7 +12,7 @@ import LoginView from '../views/LoginView.vue';
 const routes = [
   {
     path: '/',
-    name: 'Панель Управления',
+    name: 'Главная',
     component: HomeView,
   },
   {
@@ -37,7 +37,7 @@ const routes = [
   },
   {
     path: '/profile',
-    name: 'Преподаватели',
+    name: 'Настройки',
     component: ProfileView,
   },
   {
