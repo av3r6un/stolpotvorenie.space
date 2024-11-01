@@ -31,3 +31,6 @@ __pycache__
 
 # deploy ignore
 /dist
+
+cp/
+main/

@@ -14,7 +14,7 @@ class CalendarConstants(db.Model):
   time_end = db.Column(db.Integer, nullable=False)
   active = db.Column(db.Boolean, nullable=False, default=True)
 
-  def __init__(self, name, linked_person, day, time_start, time_end) -> None:
+  def __init__(self, name, linked_person, day, time_start, time_end, **kwargs) -> None:
     self.uid = create_uid(3, [a.uid for a in self.query.all()])
     self.name = name
     self.linked_person = linked_person
@@ -77,7 +77,7 @@ class Bookings(db.Model):
   def _validate_number(phone):
     number = parse_num(phone)
     if not is_valid_number(number):
-      raise ValidationError('booking', 'not_valid_phone')
+      raise ValidationError('register', 'not_valid_phone')
     return number.national_number
   
   @classmethod

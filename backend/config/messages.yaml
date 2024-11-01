@@ -1,4 +1,6 @@
 validation:
+  uid:
+    not_found: 'Указанный идентификатор не найден'
   login:
     not_found: 'Пользователь с таким логином не найден'
     passwords_mismatch: 'Пароли не совпадают'
@@ -6,11 +8,24 @@ validation:
     field_absence: 'Недостаточно данных для обработки'
   register:
     email_exists: 'Пользователь с таким email уже зарегистрирован'
-    email_validity: 'Указанный email не прошёл проверку'
+    email_invalid: 'Указанный email не прошёл проверку'
     lang: 'Использованы запрещенные символы'
     short_username: 'Слишком короткое имя пользователя'
-    username_exists: 'Пользователь с таким логином уже зарегистрирован'
+    login_exists: 'Пользователь с таким логином уже зарегистрирован'
     password_absence: 'Один из паролей отсутствует'
     weak_password: 'Слишком слабый пароль'
-    password_mismatch: 'Пароли не совпадают'
     censor_words: 'Логин содержит запрещенные слова'
+    not_valid_phone: 'Неверный формат номера телефона'
+    phone_already_registered: 'Пользователь с данным номером телефона уже зарегистрирован'
+  booking:
+    previous_date: 'Указанная дата уже прошла'
+  event: 
+    admin_not_found: 'Указан неверный ID пользователя'
+    date_not_found: 'Не указана дата'
+    small_timing: 'Слишком маленький временной промежуток'
+    already_exists: 'Событие на эту дату уже существует'
+  course:
+    invalid_date: 'Указана неверная дата'
+    not_found: 'Указанный курс не найден'
+    already_exists: 'Указанный курс уже существует'
+

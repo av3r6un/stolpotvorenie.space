@@ -1,19 +1,15 @@
+from backend.models import Bookings, Admins
 from flask_jwt_extended import jwt_required, current_user
 from flask import Blueprint, jsonify, request as req
 from backend.functions import accessible_for_bots
 from backend.exceptions import ValidationError
 from datetime import datetime as dt
-from backend.models import Bookings, Clients
-from backend import settings
-import json
 
 api = Blueprint('api', __name__)
 
 @api.route('/', methods=['GET'])
 def main():
   return jsonify(dict(ok=True))
-
-
 
 @api.route('/bookings', methods=['POST', 'GET'])
 @jwt_required(optional=True)
@@ -54,21 +50,22 @@ def manage_booking(uid):
 
 
 @api.route('/clients', methods=['POST'])
+@jwt_required(optional=True)
 @accessible_for_bots()
 def add_clients():
   if req.method == 'POST':
-    if req.args.get('form') == 'yndx':
-      data = json.loads(req.get_data().decode('utf-8'))
-      client = {
-        'name': data['answer']['data']['user_name']['value'],
-        'surname': data['answer']['data']['user_surname']['value'],
-        'phone': data['answer']['data']['user_phone']['value'],
-        'email': data['answer']['data']['user_email']['value'],
-        'patronymic': data['answer']['data']['user_patronymic']['value'] if data['answer']['data'].get('user_patronymic') else None,
-        'registered': data['created']
-      }
-      try:
-        client = Clients(**client)
-        return jsonify(status='success')
-      except ValidationError as valid:
-        return jsonify(valid.json)
+    data = req.get_data()
+    json = req.get_json()
+    print('Data:', data, 'JSON:', json)
+    return jsonify(dict(status='success', message='received'))
+
+
+@api.route('/admins/<int:user_id>', methods=['GET'])
+@jwt_required(optional=True)
+@accessible_for_bots()
+def check_admin(user_id):
+  admin = Admins.query.filter_by(tg_id=user_id).one_or_none()
+  if not admin:
+    return jsonify(dict(status="success", body=None)), 404
+  
+  return jsonify(dict(status="success", body=admin.base_info))

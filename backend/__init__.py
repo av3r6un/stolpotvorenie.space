@@ -22,9 +22,10 @@ def create_app():
   
   db.init_app(app)
 
-  from .views import api, auth
-  app.register_blueprint(api, url_prefix='/')
+  from .views import api, auth, cp
+  app.register_blueprint(api, url_prefix='/api')
   app.register_blueprint(auth, url_prefix='/auth')
+  app.register_blueprint(cp, url_prefix='/api/cp')
 
   jwt.init_app(app)
 
@@ -32,7 +33,7 @@ def create_app():
 
   @jwt.expired_token_loader
   def expired_token_callback(_jwt_header, jwt_payload):
-    return dict(msg='THE'), 401
+    return dict(msg='THE'), 403
   
   @jwt.invalid_token_loader
   def invalid_token_callback(reason):
@@ -41,9 +42,9 @@ def create_app():
   @jwt.user_lookup_loader
   def user_lookup_callback(_jwt_header, jwt_payload):
     iden = jwt_payload['sub']
-    user = Users.query.filter_by(username=iden).one_or_none()
-    if user:
-      return user
+    # user = Users.query.filter_by(username=iden).one_or_none()
+    # if user:
+    #   return user
     admin = Admins.query.filter_by(uid=iden).one_or_none()
     return admin
   
