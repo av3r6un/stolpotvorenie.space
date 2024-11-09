@@ -37,7 +37,12 @@
             {{ selectedEvent.time.start }}-{{ selectedEvent.time.end }}
           </div>
           <div class="event_body-teacher">{{ selectedEvent.executive.fullName }}</div>
-          <div class="event_body-comment">{{ selectedEvent.comment }}</div>
+          <div class="event_body-comment" v-if="selectEvent.type === 'event'">
+            {{ selectedEvent.comment }}
+          </div>
+          <div class="event_body-description" v-else>{{ selectedEvent.description }}<br>
+            {{ selectedEvent.info }}
+          </div>
           <div class="event_body-actions">
             <button class="btn btn_submit" type="button"
               @click="deleteEvent" v-if="accessibleForDelete">Удалить</button>
@@ -327,7 +332,8 @@ export default {
     font-family: $text-font;
     right: 10px;
     padding: 15px;
-    background: red;
+    background: $green;
+    color: $white;
     border-radius: 10px;
     top: calc(50% - 100px);
     &-close{
@@ -345,8 +351,14 @@ export default {
         text-align: center;
         margin-bottom: 5px;
       }
-      &-comment{
+      &-comment
+      ,&-description{
         max-width: 300px;
+      }
+      &-actions{
+        .btn_submit{
+          box-shadow: 1px 1px 10px rgba($color: $white, $alpha: .3)
+        }
       }
       border-radius: inherit;
       height: 100%;
