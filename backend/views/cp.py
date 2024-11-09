@@ -56,6 +56,16 @@ def cp_events():
     return jsonify(dict(status="success", body=event.json))
   return jsonify(dict(status="success", body=Events.all()))
 
+@cp.route('/event/<string:uid>', methods=['DELETE'])
+@jwt_required()
+def cp_event(uid):
+  event = Events.query.filter_by(uid=uid).one_or_none()
+  if not event:
+    return jsonify(dict(status="error", message="Указанное событие не найдено."))
+  if req.method == 'DELETE':
+    event.delete()
+    return jsonify(dict(status="success", message="Событие успешно удалено"))
+
 
 @cp.route('/clients/main', methods=['GET'])
 @jwt_required()

@@ -81,3 +81,7 @@ class Events(db.Model):
   def _validate_age(age: str) -> int:
     age_string = age.replace('+', '')
     return int(age_string)
+  
+  def delete(self) -> None:
+    db.session.delete(self)
+    db.session.commit()
