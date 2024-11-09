@@ -77,7 +77,7 @@ class Courses(db.Model):
     return create_uid(10, [a.uid for a in self.query.all()] + [a.uid for a in Events.query.all()])
   
   def _validate_date(self, date, time_start, time_end) -> tuple[int, int, int]:
-    if not date:
+    if date is None:
       raise ValidationError('event', 'date_not_found')
     ts = int(time_start.replace(':', ''))
     te = int(time_end.replace(':', ''))

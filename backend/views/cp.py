@@ -25,8 +25,11 @@ def main_schedule():
 @jwt_required()
 def cp_courses():
   if req.method == 'POST':
-    course = Courses(**req.get_json())
-    return jsonify(dict(status='success', body=course.json))
+    try:
+      course = Courses(**req.get_json())
+      return jsonify(dict(status='success', body=course.json))
+    except ValidationError as valid:
+      return jsonify(valid.json)
   return jsonify(dict(status='success', body=Courses.all()))
 
 
