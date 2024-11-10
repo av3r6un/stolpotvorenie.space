@@ -60,7 +60,8 @@ class Events(db.Model):
   def _validate_date(self, date, duration) -> tuple[int, int, int]:
     if not date:
       raise ValidationError('event', 'date_not_found')
-    event_date = dt.fromisoformat(date)
+    event_date_obj = dt.fromisoformat(date)
+    event_date = dt(year=event_date_obj.year, month=event_date_obj.month, day=event_date_obj.day, hour=event_date_obj.hour, minute=0 if event_date_obj.minute != 30 else event_date_obj.minute)
     date = int(dt(year=event_date.year, month=event_date.month, day=event_date.day).timestamp())
     time_start = int(event_date.strftime('%H%M'))
     time_end = int((event_date + delta(hours=int(duration))).strftime('%H%M'))
