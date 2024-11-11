@@ -123,6 +123,8 @@ export default {
       if (event.type === 'event') {
         const eventDate = new Date(event.date * 1000);
         eventDay = eventDate.getUTCDay();
+
+        console.log(event.name, eventDay, eventDate.getDay());
       }
       const startRow = this.times.indexOf(event.time.start) + 2;
       const endRow = this.times.indexOf(event.time.end) + 2;
