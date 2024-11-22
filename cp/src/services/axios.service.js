@@ -1,5 +1,8 @@
 import axios from 'axios';
+import { useNotification } from '@kyvg/vue3-notification';
 import AuthService from './auth.service';
+
+const notify = useNotification();
 
 const request = axios.create({
   baseURL: '/api/cp',
@@ -36,6 +39,11 @@ request.interceptors.response.use(
       if (!isRef) isRef = true;
       const newAcessToken = await refreshAccessToken();
       if (newAcessToken && newAcessToken === 'perm_auth') {
+        notify({
+          title: 'Ошибка',
+          text: 'Пожалуйста, авторизуйтесь заново',
+          type: 'error',
+        });
         return Promise.reject(err);
       }
       if (newAcessToken) {

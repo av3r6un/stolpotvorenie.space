@@ -146,6 +146,7 @@ export default {
       const url = `/${event.type}/${event.uid}`;
       this.backend.delete(url)
         .then((resp) => {
+        // delete from table;
           console.log(resp);
         })
         .catch((err) => console.error(err));

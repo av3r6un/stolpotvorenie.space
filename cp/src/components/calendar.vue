@@ -28,26 +28,40 @@
           <div class="fa xmark changable"></div>
         </div>
         <div class="event_body">
-          <div class="event_body-title">{{ selectedEvent.name }}</div>
-          <div class="event_body-date" v-if="selectedEvent.type === 'event'">
-            {{ selectedEventTiming }}
+          <div class="event_body-header">
+            <div class="event_body-title">{{ selectedEvent.name }}</div>
+            <div class="event_body-date" v-if="selectedEvent.type === 'event'">
+              {{ selectedEventTiming }}
+            </div>
+            <div class="event_body-date" v-else>
+              {{ this.initialDays[selectedEvent.day + 1] }}
+              {{ selectedEvent.time.start }}-{{ selectedEvent.time.end }}
+            </div>
           </div>
-          <div class="event_body-date" v-else>
-            {{ this.initialDays[selectedEvent.day + 1] }}
-            {{ selectedEvent.time.start }}-{{ selectedEvent.time.end }}
+          <div class="event_body-teacher">
+            <mIcon name="teachers" />
+            {{ selectedEvent.executive.fullName }}
           </div>
-          <div class="event_body-teacher">{{ selectedEvent.executive.fullName }}</div>
-          <div class="event_body-comment" v-if="selectEvent.type === 'event'">
+          <div class="event_body-clients"></div>
+          <div class="event_body-add_client">
+            <form @submit.prevent="addAttendance" class="add_client-form">
+              <dropDown :options="[]" placeholder="Выбрать клиента"/>
+              <button type="submit" class="btn">
+                <mIcon name="plus-sign" :width="24" :height="24" />
+              </button>
+            </form>
+          </div>
+          <!-- <div class="event_body-comment" v-if="selectEvent.type === 'event'">
             {{ selectedEvent.comment }}
           </div>
           <div class="event_body-description" v-else>{{ selectedEvent.description }}<br>
             {{ selectedEvent.info }}
-          </div>
+          </div> -->
           <div class="event_body-actions">
             <button class="btn btn_submit" type="button"
-              @click="deleteEvent" v-if="accessibleForDelete">Удалить</button>
-            <button class="btn btn_submit" type="button"
               @click="cancelEvent">Отменить</button>
+            <button class="btn btn_submit delete" type="button"
+              @click="deleteEvent" v-if="accessibleForDelete">Удалить</button>
             </div>
         </div>
       </div>
@@ -57,9 +71,12 @@
 <script>
 import moment from 'moment';
 import '@/utils/date';
+import dropDown from '@/components/dropDown.vue';
+import mIcon from '@/components/materialIcon.vue';
 
 export default {
   name: 'Cal',
+  components: { mIcon, dropDown },
   props: {
     dismissed: {
       type: Array,
@@ -123,8 +140,6 @@ export default {
       if (event.type === 'event') {
         const eventDate = new Date(event.date * 1000);
         eventDay = eventDate.getUTCDay();
-
-        console.log(event.name, eventDay, eventDate.getDay());
       }
       const startRow = this.times.indexOf(event.time.start) + 2;
       const endRow = this.times.indexOf(event.time.end) + 2;
@@ -331,6 +346,7 @@ export default {
   }
   .event_wrapper{
     position: absolute;
+    z-index: 3;
     font-family: $text-font;
     right: 10px;
     padding: 15px;
@@ -338,6 +354,7 @@ export default {
     color: $white;
     border-radius: 10px;
     top: calc(50% - 100px);
+    width: 350px;
     &-close{
       position: absolute;
       left: 2px;
@@ -347,11 +364,42 @@ export default {
       width: 25px;
     }
     .event_body{
+      &-header{
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+      }
       &-title{
         font-weight: bold;
         font-size: 18px;
         text-align: center;
-        margin-bottom: 5px;
+      }
+      &-teacher{
+        display: flex;
+        align-items: center;
+        padding: 0 15px;
+        .m-icon{
+          margin-right: 10px;
+          cursor: default;
+        }
+      }
+      &-clients{
+        padding: 0 15px;
+      }
+      &-add_client{
+        margin: 20px 0 30px 0;
+        .add_client-form{
+          width: 100%;
+          display: flex;
+          align-items: center;
+          .m-icon{
+            margin-left: 10px;
+          }
+          .input_dropdown{
+            margin-top: 0;
+            width: 100%;
+          }
+        }
       }
       &-comment
       ,&-description{
@@ -360,6 +408,9 @@ export default {
       &-actions{
         .btn_submit{
           box-shadow: 1px 1px 10px rgba($color: $white, $alpha: .3)
+        }
+        .delete{
+          color: #FE5F5F;
         }
       }
       border-radius: inherit;

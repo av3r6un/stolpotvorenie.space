@@ -65,6 +65,11 @@
               <div class="clients_table-action action-edit" @click.stop="initEditClient(idx)">
                 <mIcon name="user-edit" :width="24" :height="24" />
               </div>
+              <div class="clients_table-action action-add_abon"
+                @click.stop="addAbonement(client.uid)"
+                title="Добавить абонемент">
+                <mIcon name="abonement" :width="24" :height="24" />
+              </div>
               <div class="clients_table-action action-delete"
                 @click="deleteClient.stop(client.uid, idx)">
                 <mIcon name="delete" :width="24" :height="24" />
