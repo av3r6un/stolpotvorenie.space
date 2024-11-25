@@ -15,6 +15,7 @@ def main_schedule():
     'admins': Admins.all_executive(),
     'events': Courses.all() + Events.all(),
     'dismissed': Dismissed.all(),
+    'clients': Clients.all(),
   }
   extra = {'working_days': settings.WORKING_DAYS}
   extra['time_open'], extra['time_close'] = settings.WORKING_HOURS

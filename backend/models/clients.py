@@ -115,6 +115,10 @@ class Children(db.Model):
   def delete(self):
     db.session.delete(self)
     db.session.commit()
+
+  @classmethod
+  def all(cls):
+    return [a.json for a in cls.query.all()]
     
   # def _validate_group_uid(self, group_uid=None):
   #   if not group_uid:
