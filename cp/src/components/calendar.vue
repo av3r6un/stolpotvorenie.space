@@ -45,7 +45,8 @@
           <div class="event_body-clients"></div>
           <div class="event_body-add_client">
             <form @submit.prevent="addAttendance" class="add_client-form">
-              <dropDown :options="[]" placeholder="Выбрать клиента"/>
+              <dropDown :options="clients" placeholder="Выбрать клиента"
+                nested nested-param="fullName"/>
               <button type="submit" class="btn">
                 <mIcon name="plus-sign" :width="24" :height="24" />
               </button>
@@ -99,6 +100,10 @@ export default {
     hourGap: {
       type: Number,
       default: 30,
+      required: false,
+    },
+    clients: {
+      type: Array,
       required: false,
     },
   },

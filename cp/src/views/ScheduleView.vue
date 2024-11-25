@@ -2,7 +2,7 @@
   <article class="schedule">
     <div class="base_title changable">Расписание</div>
     <Cal :events="events" @dismiss="dismissCourse" :dismissed="dismissed"
-      @delete="deleteEvent"/>
+      @delete="deleteEvent" :clients="clients"/>
     <div class="schedule_delimetr">
     </div>
     <div class="schedule_forms">
@@ -61,6 +61,7 @@ export default {
       times: null,
       admins: [],
       events: [],
+      clients: [],
       dismissed: [],
       courseDropdowns: ['teacherDropdown', 'cDayDd', 'cTimesDd', 'cTimesendDd'],
       eventsDropdowns: ['executiveDD', 'ageDd'],
@@ -112,6 +113,7 @@ export default {
           this.events = resp.events;
           this.admins = resp.admins;
           this.dismissed = resp.dismissed;
+          this.clients = resp.clients;
           this.days = this.backend.extra.working_days;
           this.times = this.generateTimeSlots(
             this.backend.extra.time_open,
