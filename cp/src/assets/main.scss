@@ -28,10 +28,12 @@ body{
     background-color: $bg-color;
   }
 }
-
 .base_link{
   text-decoration: none;
   color: inherit;
+  &.ud{
+    text-decoration: underline;
+  }
 }
 .input_wide{
   background: $semi-white;
@@ -62,6 +64,11 @@ body{
   }
   &:first-of-type{
     margin-bottom: 10px;
+  }
+  &.small_input{
+    width: 100px;
+    font-size: 16px;
+    background: rgba($color: $white, $alpha: .8);    
   }
 }
 .input_dropdown{
@@ -94,12 +101,36 @@ textarea.input_wide{
   }
 }
 
+#app:has(.main_content.full) {
+  .base_title{
+    width: calc(100% - 75px);
+    left: 75px;
+  }
+}
+#app:has(.main_content.full.mobile) {
+  .base_title{
+    width: 100%;
+    left: 0;
+    height: 50px;
+  }
+}
+#app:has(.main_content) {
+  .base_title{
+    left: 350px;
+    width: calc(100% - 350px);
+  }
+}
 .base_title{
   font-family: $title-font;
   font-size: 24px;
   color: $black;
-  text-align: center;
-}
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 85px;
+  transition: left .4s ease-in;
+ }
 
 .btn_submit{
   background: $green;
@@ -113,6 +144,15 @@ textarea.input_wide{
   font-weight: 400;
   cursor: pointer;
   margin-top: 15px;
+}
+.btn_small{
+  color: $green;
+  font-size: 20px;
+  width: 35px;
+  height: 35px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .inv_input{
@@ -135,18 +175,47 @@ textarea.input_wide{
 .main_content{
   position: absolute;
   left: 350px;
+  top: 85px;
   width: calc(100% - 350px);
   min-height: 100vh;
   z-index: -1;
   transition: left .4s ease-in, background .4s ease-in, width .4s ease-in;
-  padding: 25px 25px 0 25px;
+  padding: 0 25px 0 25px;
   box-sizing: border-box;
+  &.mobile{
+    left: 0 !important;
+    top: 50px;
+    width: fit-content !important;
+    max-width: 100%;
+    padding-bottom: 70px;
+    min-height: auto;
+  }
   &.full{
     left: 75px;
     width: calc(100% - 75px);
   }
   &.dark{
     background: $bg-color;
+    .small_input{
+      background: rgba($color: $white, $alpha: 0.3);
+    }
+    .checkbox_checkbox{
+      background: rgba($color: $white, $alpha: .3);
+    }
+    .filter_input{
+      color: $white;
+      caret-color: $white;
+      &::placeholder{
+        color: $white;
+      }
+      background-color: rgba($color: $white, $alpha: .3);
+      backdrop-filter: blur(10px);
+    }
+    .clear_button{
+      &:after{
+        color: $white;
+      }
+    }
   }
   padding-bottom: 40px;
 }
@@ -211,7 +280,9 @@ textarea.input_wide{
 .chevron_bottom:before{
   content: '\f078';
 }
-
+.ruble:before{
+  content: '\f158';
+}
 .xmark:before{
   content: '\f00d';
 }
@@ -221,7 +292,9 @@ textarea.input_wide{
 .fa-unveal:before{
   content: '\f070';
 }
-
+.check:before{
+  content: '\f00c';
+}
 .validatable{
   border: 1px solid transparent;
   &.invalid{

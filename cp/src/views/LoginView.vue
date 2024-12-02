@@ -1,7 +1,6 @@
 <template>
   <article class="login">
     <div class="login_wrapper">
-      <div class="login_title base_title changable">Авторизация</div>
       <form class="login_form" @submit.prevent="login">
         <input type="text" class="input_wide" required autofocus autocomplete="off"
           placeholder="Логин" v-model="userInfo.login">

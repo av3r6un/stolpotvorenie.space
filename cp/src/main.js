@@ -1,5 +1,6 @@
 import { createApp } from 'vue';
 import Notifications from '@kyvg/vue3-notification';
+import VueMobileDetection from 'vue-mobile-detection';
 import App from './App.vue';
 import './registerServiceWorker';
 import router from './router';
@@ -10,4 +11,5 @@ createApp(App)
   .use(router)
   .use(store)
   .use(Notifications)
+  .use(VueMobileDetection)
   .mount('#app');

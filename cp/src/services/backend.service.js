@@ -33,13 +33,13 @@ class Backend {
 
   manageError(err) {
     this.status = 'error';
-    this.msg = err.response.msg;
+    this.msg = err.response.data.message || err.response.msg;
     notify({
       title: 'Ошибка!',
       text: this.msg,
       type: this.status,
     });
-    return err;
+    return Promise.reject(err);
   }
 
   async get(url, parameters = null) {

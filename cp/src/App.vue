@@ -2,8 +2,9 @@
   <sideBar @sidebar-toggled="toggleContent" @theme="toggleTheme"
     ref="sideBar"/>
   <Notifications width="340" :max="3" ignore-duplicates/>
+  <div class="page_title base_title changable" >{{ $route.name }}</div>
   <router-view class="main_content"
-    :class="[!short ? 'full' : '', dark ? 'dark' : '']"/>
+    :class="[!short ? 'full' : '', dark ? 'dark' : '', mobile ? 'mobile' : '']"/>
 </template>
 <script>
 import { Notifications } from '@kyvg/vue3-notification';
@@ -41,6 +42,8 @@ export default {
     $route: 'manageTitle',
   },
   mounted() {
+    this.mobile = this.$isMobile();
+    this.short = !this.mobile;
     this.toggleTheme(this.localStorage.themeColors.dark);
     this.$refs.sideBar.dark = this.localStorage.themeColors.dark;
   },

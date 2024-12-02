@@ -1,6 +1,5 @@
 <template>
   <article class="profile">
-    <div class="profile_title base_title changable">Мой профиль</div>
     <div class="profile_forms">
       <form class="profile_forms-edit profile_form" @submit.prevent="changeInfo">
         <div class="profile_forms-title plus-sign changable form_title">Изменить информацию</div>
@@ -118,7 +117,7 @@ export default {
     }
     @media screen {
       @media (max-width: 640px) {
-        max-width: 95%;
+        max-width: 100%;
         .profile_form{
           margin-top: 10px;
           &:first-of-type{
@@ -130,6 +129,7 @@ export default {
   }
   &_form{
     max-width: 400px;
+    width: 100%;
     &-toggle{
       position: absolute;
       @media screen {

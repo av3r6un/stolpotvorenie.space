@@ -31,7 +31,7 @@ const routes = [
     component: ScheduleView,
   },
   {
-    path: '/attendence',
+    path: '/attendance',
     name: 'Посещения',
     component: AttendenceView,
   },

@@ -44,6 +44,15 @@ class Storage {
     this.save();
   }
 
+  dustEvent(uid) {
+    delete this.newEventsList[uid];
+    this.save();
+  }
+
+  gatherEvent(uid) {
+    return this.newEventsList[uid];
+  }
+
   timeNow() {
     this.msg = null;
     return new Date() / 1000;

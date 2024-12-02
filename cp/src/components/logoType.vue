@@ -24,7 +24,7 @@ export default {
     },
     height: {
       type: Number,
-      default: 25,
+      default: 35,
       required: false,
     },
   },
@@ -57,7 +57,7 @@ export default {
     },
     normalSize() {
       this.w = 290;
-      this.h = 25;
+      this.h = 35;
     },
     minimize() {
       this.w = 35;

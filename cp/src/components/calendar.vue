@@ -42,22 +42,24 @@
             <mIcon name="teachers" />
             {{ selectedEvent.executive.fullName }}
           </div>
-          <div class="event_body-clients"></div>
+          <div class="event_body-clients">
+            <div class="event_body-client" v-for="cl in currentAttendanceUsers" :key="cl.uid">
+              <router-link :to="{ path: '/attendance', query: { uid: cl.atUid } }"
+                class="base_link ud">
+                {{ cl.fullName }}
+              </router-link>
+            </div>
+          </div>
           <div class="event_body-add_client">
             <form @submit.prevent="addAttendance" class="add_client-form">
               <dropDown :options="clients" placeholder="Выбрать клиента"
-                nested nested-param="fullName"/>
+                nested nested-param="fullName" v-model:selected="currentAtClient"
+                ref="clientDD"/>
               <button type="submit" class="btn">
-                <mIcon name="plus-sign" :width="24" :height="24" />
+                <mIcon name="plus-sign" :width="24" :height="24"/>
               </button>
             </form>
           </div>
-          <!-- <div class="event_body-comment" v-if="selectEvent.type === 'event'">
-            {{ selectedEvent.comment }}
-          </div>
-          <div class="event_body-description" v-else>{{ selectedEvent.description }}<br>
-            {{ selectedEvent.info }}
-          </div> -->
           <div class="event_body-actions">
             <button class="btn btn_submit" type="button"
               @click="cancelEvent">Отменить</button>
@@ -106,6 +108,10 @@ export default {
       type: Array,
       required: false,
     },
+    attendance: {
+      type: Array,
+      required: false,
+    },
   },
   data() {
     return {
@@ -117,6 +123,7 @@ export default {
       diff: 0,
       selectedEventWeek: null,
       localStorage: this.$parent.$parent.$parent.localStorage,
+      currentAtClient: null,
     };
   },
   methods: {
@@ -172,14 +179,17 @@ export default {
       }
       this.currentDate = currentWeek;
       this.diff = 0;
+      this.$emit('calWeek', this.currentDate.isoWeek());
     },
     previousWeek() {
       this.diff -= 1;
       this.currentDate = this.currentDate.clone().subtract(1, 'weeks');
+      this.$emit('calWeek', this.currentDate.isoWeek());
     },
     nextWeek() {
       this.diff += 1;
       this.currentDate = this.currentDate.clone().add(1, 'weeks');
+      this.$emit('calWeek', this.currentDate.isoWeek());
     },
     manageEvents() {
       console.log(this.events);
@@ -208,11 +218,11 @@ export default {
     cancelEvent() {
       const event = { ...this.selectedEvent };
       if (this.selectedEvent.type !== 'event') {
-        // eslint-disable-next-line
-        const eventDate = this.selectedEventWeek.toDate().getDateByWeekDay(this.selectedEvent.day + 1);
-        const [startHour, startMinute] = this.selectedEvent.time.start.split(':').map(Number);
-        eventDate.setHours(startHour, startMinute, 0);
-        event.date = eventDate;
+        event.date = this.getCourseDate(
+          this.selectedEventWeek,
+          this.selectedEvent.day,
+          this.selectedEvent.time.start,
+        );
       }
       this.selectedEvent = null;
       this.$emit('dismiss', event);
@@ -221,6 +231,27 @@ export default {
       const event = { ...this.selectedEvent };
       this.selectedEvent = null;
       this.$emit('delete', event);
+    },
+    getCourseDate(week, day, timeStart) {
+      const eventDate = week.toDate().getDateByWeekDay(day + 1);
+      const [startHour, startMinute] = timeStart.split(':').map(Number);
+      eventDate.setHours(startHour, startMinute, 0);
+      return eventDate;
+    },
+    addAttendance() {
+      const event = { ...this.selectedEvent };
+      if (event.type !== 'event') {
+        event.date = this.getCourseDate(this.selectedEventWeek, event.day, event.time.start);
+        delete event.day;
+      }
+      this.$emit('attendanceRecord', { ...event, client_uid: this.currentAtClient });
+      this.$refs.clientDD.reset();
+      this.currentAtClient = null;
+    },
+    lower24(timestamp) {
+      if (!timestamp) return false;
+      const eventDate = new Date(timestamp * 1000);
+      return eventDate.withinPastDay();
     },
   },
   computed: {
@@ -246,16 +277,20 @@ export default {
     },
     accessibleForDelete() {
       const newlyCreatedEvents = Object.keys(this.$parent.localStorage.newEventsList);
-      return newlyCreatedEvents.includes(this.selectedEvent.uid);
+      const inLast = this.lower24(this.$parent.localStorage.newEventsList[this.selectedEvent.uid]);
+      return this.$store.getters.superuser
+        ? newlyCreatedEvents.includes(this.selectedEvent.uid)
+        : newlyCreatedEvents.includes(this.selectedEvent.uid) && inLast;
     },
-    // formattedDays() {
-    //   this.currentDate.locale('ru');
-    //   const weekDays = this.daysOfWeek;
-    //   const empty = [''];
-    //   const days = empty.concat(weekDays);
-    //   console.log(days);
-    //   return days;
-    // },
+    currentAttendanceUsers() {
+      const currentAttendance = [];
+      this.attendance.forEach((at) => {
+        if (at.event.uid === this.selectedEvent.uid) {
+          currentAttendance.push({ ...at.client, atUid: at.uid });
+        }
+      });
+      return currentAttendance;
+    },
   },
   mounted() {
   },
@@ -278,6 +313,7 @@ export default {
     border-right: 1px solid $black;
     grid-gap: 1px;
     user-select: none;
+    overflow-x: auto;
   }
   &_year{
     height: 30px;
@@ -360,6 +396,13 @@ export default {
     border-radius: 10px;
     top: calc(50% - 100px);
     width: 350px;
+    @media screen {
+      @media (max-width: 420px) {
+        position: fixed;
+        top: 85px;
+        width: 95%;
+      }
+    }
     &-close{
       position: absolute;
       left: 2px;

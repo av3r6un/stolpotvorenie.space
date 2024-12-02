@@ -42,7 +42,7 @@ class Clients(db.Model):
 
   @property
   def base_info(self):
-    return dict(uid=self.uid, full_name=self.full_name, phone=self.phone)
+    return dict(uid=self.uid, fullName=self.full_name, phone=self.phone)
   
   @property
   def children(self):
@@ -52,6 +52,10 @@ class Clients(db.Model):
   @classmethod
   def all(cls) -> dict:
     return [a.json for a in cls.query.all()]
+  
+  @classmethod
+  def small(cls) -> list:
+    return [a.base_info for a in cls.query.all()]
   
   def delete(self) -> None:
     if self.children:
@@ -109,8 +113,13 @@ class Children(db.Model):
     return parent_uid
   
   @property
+  def full_name(self):
+    parent = Clients.query.filter_by(uid=self.parent_uid).first()
+    return f'{parent.surname} {self.name}'
+  
+  @property
   def json(self) -> dict:
-    return dict(uid=self.uid, name=self.name, age=self.age)
+    return dict(uid=self.uid, fullName=self.full_name, age=self.age, name=self.name)
   
   def delete(self):
     db.session.delete(self)

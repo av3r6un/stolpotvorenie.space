@@ -1,6 +1,6 @@
 <template>
-  <article class="clients">
-    <div class="clients_forms">
+  <article class="clients" :class="mobile ? 'mobile' : ''">
+    <div class="clients_forms" :class="mobile ? 'mobile' : ''">
       <form class="clients_add base_form" @submit.prevent="addClient">
         <div class="clients_form-title plus-sign changable form_title"
           v-if="editClient">Изменить пользователя</div>
@@ -29,7 +29,7 @@
         <button type="submit" class="btn btn_submit">Сохранить</button>
       </form>
     </div>
-    <div class="clients_table">
+    <div class="clients_table" :class="mobile ? 'mobile' : ''">
       <div class="clients_table-wrapper">
         <div class="clients_table-headers">
           <div class="clients_table-headers_title changable">Фамилия</div>
@@ -37,7 +37,7 @@
           <div class="clients_table-headers_title changable">Отчество</div>
           <div class="clients_table-headers_title changable">Номер телефона</div>
           <div class="clients_table-headers_title email-th changable">E-mail</div>
-          <div class="clients_table-headers_title changable">Группа</div>
+          <!-- <div class="clients_table-headers_title changable">Группа</div> -->
           <div class="clients_table-headers_title changable">Действие</div>
         </div>
         <div class="clients_table-body">
@@ -60,7 +60,7 @@
             <div class="clients_table-data">{{ client.patronymic }}</div>
             <div class="clients_table-data" v-html="formatPhone(client.phone)"></div>
             <div class="clients_table-data email-td" v-html="formatMail(client.email)"></div>
-            <div class="clients_table-data">{{ client.group }}</div>
+            <!-- <div class="clients_table-data">{{ client.group }}</div> -->
             <div class="clients_table-data actions-td">
               <div class="clients_table-action action-edit" @click.stop="initEditClient(idx)">
                 <mIcon name="user-edit" :width="24" :height="24" />
@@ -92,6 +92,7 @@ export default {
   data() {
     return {
       backend: new Backend(),
+      mobile: false,
       currentParent: null,
       editClient: false,
       newClient: {
@@ -205,6 +206,7 @@ export default {
     },
   },
   mounted() {
+    this.mobile = this.$isMobile();
     this.gatherEssentialsData();
   },
 };
@@ -212,10 +214,20 @@ export default {
 <style lang="scss" scoped>
 @import "@/assets/variables.scss";
 .clients{
+  &.mobile{
+    display: flex;
+    flex-wrap: wrap-reverse;
+  }
   &_forms{
     display: flex;
     justify-content: space-around;
     align-items: start;
+    flex-wrap: wrap;
+    &.mobile{
+      .clients_add{
+        margin-bottom: 10px;
+      }
+    }
   }
   &_children{
     position: absolute;
@@ -225,6 +237,11 @@ export default {
     position: relative;
   }
   &_table{
+    &.mobile{
+      margin-bottom: 20px;
+      margin-top: 0;
+      overflow-x: auto;
+    }
     margin-top: 20px;
     font-family: $text-font;
     &-wrapper{

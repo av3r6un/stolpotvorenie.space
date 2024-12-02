@@ -17,3 +17,17 @@ Date.prototype.getDateByWeekDay = function (weekdayIndex) {
   date.setDate(date.getDate() + dayDiff);
   return date;
 }
+
+Date.prototype.shortDate = function () {
+  const date = new Date(this.getTime());
+  const dt = date.getDate().toString().padStart(2, '0');
+  const month = `${date.getMonth() + 1}`.padStart(2, '0');
+  return `${dt}.${month}`;
+}
+
+Date.prototype.withinPastDay = function() {
+  const date = new Date(this.getTime());
+  const now = new Date();
+  const diff = (now - date) / (24 * 3600 * 1000); 
+  return diff <= 1;
+}

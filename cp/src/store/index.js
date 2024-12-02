@@ -12,6 +12,7 @@ export default createStore({
       name: user.name,
       uid: user.uid,
       login: user.login,
+      superuser: user.superuser,
     }
     : {
       isAuth: false,
@@ -21,6 +22,7 @@ export default createStore({
       name: null,
       login: null,
       admin: null,
+      superuser: false,
     },
   getters: {
     isAuth: (state) => state.isAuth,
@@ -29,6 +31,7 @@ export default createStore({
     name: (state) => state.name,
     accsToken: (state) => state.accsToken,
     rfshToken: (state) => state.rfshToken,
+    superuser: (state) => state.superuser,
   },
   mutations: {
     login(state, userInfo) {

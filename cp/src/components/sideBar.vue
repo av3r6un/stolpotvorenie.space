@@ -1,11 +1,14 @@
 <template>
-  <nav class="sidebar" :class="!short ? 'long' : ''">
-    <div class="sidebar_wrapper">
+  <nav class="sidebar" :class="[!short ? 'long' : '', mobile ? 'mobile' : '']">
+    <div class="sidebar_wrapper" :class="mobile ? 'mobile' : ''">
       <ul class="sidebar_nav">
-        <li class="sidebar_item logo" :class="dark ? 'dark' : ''">
+        <li class="sidebar_item logo" :class="dark ? 'dark' : ''" v-if="!mobile">
           <router-link to="/">
             <logoType :short="short" />
           </router-link>
+        </li>
+        <li class="sidebar_item short home" :class="dark ? 'dark' : ''" v-else>
+          <router-link to="/"><mIcon name='home' /></router-link>
         </li>
         <li class="sidebar_item" :class="short ? 'short' : ''">
           <router-link to="/clients" class="base_link">
@@ -13,12 +16,6 @@
             <span class="sidebar_item-title" v-if="!short">Пользователи</span>
           </router-link>
         </li>
-        <!-- <li class="sidebar_item" :class="short ? 'short' : ''">
-          <router-link to="/groups" class="base_link">
-            <mIcon name="user-groups" />
-            <span class="sidebar_item-title" v-if="!short">Группы</span>
-          </router-link>
-        </li> -->
         <li class="sidebar_item" :class="short ? 'short' : ''">
           <router-link to="/schedule" class="base_link">
             <mIcon name="schedule" />
@@ -26,8 +23,8 @@
           </router-link>
         </li>
         <li class="sidebar_item" :class="short ? 'short' : ''">
-          <router-link to="/attendence" class="base_link">
-            <mIcon name="attendence" />
+          <router-link to="/attendance" class="base_link">
+            <mIcon name="attendance" />
             <span class="sidebar_item-title" v-if="!short">Посещения</span>
           </router-link>
         </li>
@@ -45,10 +42,11 @@
           </router-link>
         </li>
       </ul>
-      <div class="sidebar_button" @click="toggleSidebar" :class="short ? 'outside' : ''">
+      <div class="sidebar_button" @click="toggleSidebar" :class="short ? 'outside' : ''"
+        v-if="!mobile">
         <mIcon :name="arrows" :width="27" :height="24" />
       </div>
-      <div class="sidebar_theme" @click="toggleTheme" v-show="!short">
+      <div class="sidebar_theme" @click="toggleTheme" v-show="!short" v-if="!mobile">
         <mIcon :name="dark ? 'sun' : 'moon'" :width="24" :height="24" />
       </div>
     </div>
@@ -66,6 +64,7 @@ export default {
       short: false,
       currentRoute: null,
       dark: false,
+      mobile: false,
     };
   },
   methods: {
@@ -94,6 +93,8 @@ export default {
     },
   },
   mounted() {
+    this.mobile = this.$isMobile();
+    this.short = this.$isMobile();
   },
   deactivated() {
     // document.querySelector('a.base_link').removeEventListener('click', this.shortAnalyze);
@@ -110,6 +111,12 @@ export default {
   }
   position: fixed;
   height: 100%;
+  &.mobile{
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 60px;
+  }
   &_nav{
     display: flex;
     flex-direction: column;
@@ -178,6 +185,27 @@ export default {
     height: 100%;
     background: $green;
     position: relative;
+    &.mobile{
+      height: 60px;
+      width: 100%;
+      .sidebar_nav{
+        flex-direction: row;
+        padding: 0 20px;
+        justify-content: space-between;
+        align-items: center;
+        height: inherit
+      }
+      .sidebar_item{
+        margin: 0;
+        padding: 5px;
+        &.logo{
+          display: none;
+        }
+        &-title{
+          display: none;
+        }
+      }
+    }
   }
   &_theme{
     position: absolute;

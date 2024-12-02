@@ -1,8 +1,8 @@
 <template>
   <article class="schedule">
-    <div class="base_title changable">Расписание</div>
     <Cal :events="events" @dismiss="dismissCourse" :dismissed="dismissed"
-      @delete="deleteEvent" :clients="clients"/>
+      @delete="deleteEvent" :clients="clients" :attendance="attendance"
+      @attendanceRecord="manageAttendance" @calWeek="weekChanged" />
     <div class="schedule_delimetr">
     </div>
     <div class="schedule_forms">
@@ -49,6 +49,7 @@
 import dropDown from '../components/dropDown.vue';
 import Cal from '../components/calendar.vue';
 import Backend from '../services/backend.service';
+import '../utils/date';
 
 export default {
   name: 'ScheduleView',
@@ -63,6 +64,8 @@ export default {
       events: [],
       clients: [],
       dismissed: [],
+      attendance: [],
+      gatheredWeeks: [],
       courseDropdowns: ['teacherDropdown', 'cDayDd', 'cTimesDd', 'cTimesendDd'],
       eventsDropdowns: ['executiveDD', 'ageDd'],
       localStorage: this.$parent.$parent.localStorage,
@@ -120,6 +123,7 @@ export default {
             this.backend.extra.time_close,
             '30',
           );
+          this.getWeekAttendance(new Date().getWeek());
         })
         .catch((err) => console.error(err));
     },
@@ -147,9 +151,13 @@ export default {
     deleteEvent(event) {
       const url = `/${event.type}/${event.uid}`;
       this.backend.delete(url)
-        .then((resp) => {
-        // delete from table;
-          console.log(resp);
+        .then(() => {
+          this.events.forEach((ev, idx) => {
+            if (ev.uid === event.uid) {
+              this.events.splice(idx, 1);
+            }
+          });
+          this.localStorage.dustEvent(event.uid);
         })
         .catch((err) => console.error(err));
     },
@@ -180,6 +188,24 @@ export default {
         })
         .catch((err) => console.error(err));
     },
+    manageAttendance(eventInfo) {
+      this.backend.post('/attendance', eventInfo)
+        .then((resp) => { this.attendance.push(resp); })
+        .catch((err) => console.error(err));
+    },
+    getWeekAttendance(weekNum) {
+      this.backend.get('/attendance', { week: weekNum })
+        .then((resp) => {
+          this.attendance.push(...resp);
+          this.gatheredWeeks.push(weekNum);
+        })
+        .catch((err) => console.error(err));
+    },
+    weekChanged(weekNum) {
+      if (!this.gatheredWeeks.includes(weekNum)) {
+        this.getWeekAttendance(weekNum);
+      }
+    },
   },
   computed: {
     formattedTimes() {
@@ -200,6 +226,11 @@ export default {
   &_forms{
     display: flex;
     justify-content: space-around;
+    @media screen {
+      @media (max-width: 420px) {
+        flex-direction: column;
+      }
+    }
     .form_line{
       display: flex;
       align-items: center;
@@ -216,10 +247,21 @@ export default {
   }
   &_add-course,
   &_add-event{
+    @media screen {
+      @media (max-width: 420px) {
+        max-width: 100%;
+        min-width: auto;
+      }
+    }
     max-width: 410px;
     min-width: 380px;
   }
   &_add-course{
+    @media screen {
+      @media (max-width: 420px) {
+        margin-bottom: 10px;
+      }
+    }
     .input_dropdown{
       margin-bottom: 10px;
     }
