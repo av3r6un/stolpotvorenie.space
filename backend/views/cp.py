@@ -1,4 +1,4 @@
-from backend.models import Clients, Courses, Events, Admins, Dismissed, Children, Groups
+from backend.models import Clients, Courses, Events, Admins, Dismissed, Children, Groups, Attendance
 from flask_jwt_extended import jwt_required, current_user
 from flask import Blueprint, jsonify, request as req
 from backend.exceptions import ValidationError
@@ -15,6 +15,7 @@ def main_schedule():
     'admins': Admins.all_executive(),
     'events': Courses.all() + Events.all(),
     'dismissed': Dismissed.all(),
+    'clients': Clients.small() + Children.all(),
   }
   extra = {'working_days': settings.WORKING_DAYS}
   extra['time_open'], extra['time_close'] = settings.WORKING_HOURS
@@ -111,6 +112,19 @@ def cp_manage_client(uid):
     client.delete()
     return jsonify(dict(status="success", message="Клиент успешно удален"))
   return jsonify(dict(status="success", body=client.json))
+
+
+@cp.route('/attendance', methods=['GET', 'POST'])
+@jwt_required()
+def cp_attendance():
+  if req.method == 'POST':
+    try:
+      at = Attendance(**req.get_json())
+      return jsonify(dict(status='success', body=at.json))
+    except ValidationError as valid:
+      return jsonify(valid.json), 400
+  requested_attendance = Attendance.weekly(req.args.get('week')) if req.args.get('week') else Attendance.all()
+  return jsonify(dict(status="success", body=requested_attendance))
 
 
 @cp.route('/me', methods=['GET'])

@@ -64,6 +64,10 @@ class Courses(db.Model):
     return dict(uid=self.uid, name=self.name, description=self.description, info=self.info, day=self.day,
                 executive=self.executive, type=self.type, age=self.age, time=dict(start=self.start_time, end=self.end_time))
   
+  @property
+  def base_info(self) -> dict:
+    return dict(uid=self.uid, name=self.name, type=self.type)
+  
   @staticmethod
   def _validate_admin(admin_uid) -> str:
     from .admins import Admins
