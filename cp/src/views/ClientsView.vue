@@ -14,7 +14,7 @@
           v-model="newClient.patronymic">
         <input type="text" placeholder="Телефон" required class="input_wide"
           v-model="newClient.phone">
-        <input type="text" placeholder="E-mail" required class="input_wide"
+        <input type="text" placeholder="E-mail" class="input_wide"
           v-model="newClient.email">
         <button type="submit" class="btn btn_submit">Сохранить</button>
       </form>
