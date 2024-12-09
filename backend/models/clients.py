@@ -12,17 +12,17 @@ class Clients(db.Model):
   surname = db.Column(db.String(50), nullable=False)
   patronymic = db.Column(db.String(50), nullable=True)
   phone = db.Column(db.Integer, nullable=False, unique=True)
-  email = db.Column(db.String(100), nullable=False, unique=True)
+  email = db.Column(db.String(100), nullable=True, unique=True)
   registered = db.Column(db.Integer, nullable=False, default=int(dt.now().timestamp()))
   children = db.relationship('Children', backref='children', lazy='dynamic')
 
-  def __init__(self, name, surname, phone, email, patronymic=None, **kwargs) -> None:
+  def __init__(self, name, surname, phone, email=None, patronymic=None, **kwargs) -> None:
     self.uid = create_uid(7, [a.uid for a in self.query.all()] + [a.uid for a in Children.query.all()])
     self.name = name
     self.surname = surname
     self.patronymic = patronymic
     self.phone = self._validate_phone(phone)
-    self.email = self._validate_email(email)
+    self.email = self._validate_email(email) if email else None
     self.registered = int(dt.now().timestamp())
     db.session.add(self)
     db.session.commit()
