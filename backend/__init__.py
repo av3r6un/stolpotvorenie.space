@@ -25,7 +25,7 @@ def create_app():
   from .views import api, auth, cp
   app.register_blueprint(api, url_prefix='/api')
   app.register_blueprint(auth, url_prefix='/auth')
-  app.register_blueprint(cp, url_prefix='/api/cp')
+  app.register_blueprint(cp, url_prefix='/cp')
 
   jwt.init_app(app)
 
